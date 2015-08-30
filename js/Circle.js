@@ -1,5 +1,5 @@
 // Object that draws a circle an its ball
-var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth, ballSpeed){
+var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth, timeForLap){
   this.context = context;
   this.radius = radius;
   this.centerX = centerX;
@@ -7,17 +7,18 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
   this.pathWidth = pathWidth;
   this.angle = angle;
   this.color = color;
+  this.timeForLap = timeForLap;
+
+  // calculate the length of the circle
   this.pathLength = 2*Math.PI*radius;
+
+  // calculate the necessary divisions needed for calculating the speed
+  this.pathDivisions = this.pathLength/(timeForLap/33);
   this.ball = {
     x: 0,
     y: 0,
-    speed: parseInt(360/(this.pathLength/50)) * (Math.PI/180)
+    speed: 360/(this.pathLength/this.pathDivisions) * (Math.PI/180)
   };
-  console.log("path length", this.pathLength);
-  console.log("ball speed", this.ball.speed);
-
-  this.timeForLap = (parseInt(360/(this.pathLength/50))/this.ball.speed);
-  console.log("time for lap", this.timeForLap);
 
   // calculate distance to inner edge
   var edgeInnX2 = Math.pow((centerX + (radius - (this.pathWidth - this.pathWidth / 2)) - centerX), 2);
@@ -37,9 +38,7 @@ Circle.prototype.draw = function(){
 
   // draw path
   this.context.beginPath();
-  this.context.strokeStyle = 'rgb(' + this.color.r +
-    ',' + this.color.g +
-    ',' + this.color.b + ')';
+  this.context.strokeStyle = getRGBText(this.color);
   this.context.lineWidth = this.pathWidth;
   this.context.arc(this.centerX, this.centerY, this.radius, 0, Math.PI*2, true);
   this.context.stroke();
@@ -50,9 +49,7 @@ Circle.prototype.draw = function(){
   this.angle += this.ball.speed;
 
   // draw moving ball
-  this.context.fillStyle = 'rgb(' + this.color.r +
-    ',' + this.color.g +
-    ',' + this.color.b + ')';
+  this.context.fillStyle = getRGBText(this.color);
   this.context.beginPath();
   this.context.arc(this.ball.x, this.ball.y, 15, 0, Math.PI*2, true);
   this.context.closePath();

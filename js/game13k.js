@@ -35,7 +35,7 @@ Game.prototype.init = function(){
     0,                              // start ball movement angle
     {r: 255, g: 0, b: 0},           // path and ball color
     8,                              // path width
-    .1                              // ball speed
+    2000                              // time for lap (in ms)
   ));
 
   // add mouse listeners
@@ -78,7 +78,7 @@ Game.prototype.onMouseClick = function(e){
 
 Game.prototype.drawTemperatureIndicator = function(){
   // draw background
-  this.context.fillStyle = 'rgb(255, 0, 0)';
+  this.context.fillStyle = getRGBText({r:255,g:0,b:0});
   this.context.fillRect(0, this.canvas.height - 40, this.canvas.width, this.canvas.height);
 
   // draw text

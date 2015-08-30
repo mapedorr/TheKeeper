@@ -23,3 +23,7 @@ function fade(target, startColor, endColor, duration) {
   }, interval);
   return theInterval;
 }
+
+function getRGBText(color){
+  return 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')';
+}
