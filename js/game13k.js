@@ -77,6 +77,14 @@ Game.prototype.onMouseClick = function(e){
 };
 
 Game.prototype.drawTemperatureIndicator = function(){
+  // draw background
   this.context.fillStyle = 'rgb(255, 0, 0)';
   this.context.fillRect(0, this.canvas.height - 40, this.canvas.width, this.canvas.height);
+
+  // draw text
+  this.context.font = "40px Sans-serif";
+  this.context.fillStyle = "#F0F0F0";
+  var text = "1°C";
+  var metrics = this.context.measureText(text);
+  this.context.fillText(text, this.canvas.width/2 - metrics.width/2, this.canvas.height-5);
 };

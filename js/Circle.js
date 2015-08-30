@@ -11,8 +11,13 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
   this.ball = {
     x: 0,
     y: 0,
-    speed: 360/(this.pathLength/10) * (Math.PI/180)
+    speed: parseInt(360/(this.pathLength/50)) * (Math.PI/180)
   };
+  console.log("path length", this.pathLength);
+  console.log("ball speed", this.ball.speed);
+
+  this.timeForLap = (parseInt(360/(this.pathLength/50))/this.ball.speed);
+  console.log("time for lap", this.timeForLap);
 
   // calculate distance to inner edge
   var edgeInnX2 = Math.pow((centerX + (radius - (this.pathWidth - this.pathWidth / 2)) - centerX), 2);
