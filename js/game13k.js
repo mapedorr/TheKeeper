@@ -1,9 +1,8 @@
 window.addEventListener('load', eventWindowLoaded, false);
 function eventWindowLoaded() {
   var canvasElement = document.getElementById("canvas13K");
-  var canvasContainerElement = document.getElementById("canvasContainer");
-  canvasElement.setAttribute("width", canvasContainerElement.clientWidth - 20);
-  canvasElement.setAttribute("height", canvasContainerElement.clientHeight - 20);
+  canvasElement.width = window.innerWidth;
+  canvasElement.height = window.innerHeight;
   var _game = new Game();
   _game.init();
 }
@@ -14,6 +13,8 @@ var Game = function(){
   this.circles = [];
   this.mouseX = null;
   this.mouseY = null;
+  this.currentGameState = 0;
+  this.currentGameStateFunction = null;
 };
 
 Game.prototype.init = function(){
@@ -28,17 +29,14 @@ Game.prototype.init = function(){
 
   // create the circle
   this.circles.push(new Circle(this.context,
-    100,// radius
-    250,// center x
-    250,// center y
-    0,// angle
-    {
-      r: 255,
-      g: 0,
-      b: 0
-    },// path and ball color
-    8,// path width
-    .18));// ball speed
+    200,                            // radius
+    this.canvas.width/2,            // center x
+    this.canvas.height/2,           // center y
+    0,                              // start ball movement angle
+    {r: 255, g: 0, b: 0},           // path and ball color
+    8,                              // path width
+    .1                              // ball speed
+  ));
 
   // add mouse listeners
   this.canvas.addEventListener("click", function(e){
@@ -58,6 +56,9 @@ Game.prototype.drawScreen = function(){
   this.context.fillStyle = '#FFFFFF';
   this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+  // draw temperature indicator
+  this.drawTemperatureIndicator();
+
   // draw the circles
   for(var i=0; i<this.circles.length; i++){
     this.circles[i].draw();
@@ -73,4 +74,9 @@ Game.prototype.onMouseClick = function(e){
   for(var i=0; i<this.circles.length; i++){
     this.circles[i].checkClick(this.mouseX, this.mouseY);
   }
+};
+
+Game.prototype.drawTemperatureIndicator = function(){
+  this.context.fillStyle = 'rgb(255, 0, 0)';
+  this.context.fillRect(0, this.canvas.height - 40, this.canvas.width, this.canvas.height);
 };

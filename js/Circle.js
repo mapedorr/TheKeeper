@@ -7,10 +7,11 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
   this.pathWidth = pathWidth;
   this.angle = angle;
   this.color = color;
+  this.pathLength = 2*Math.PI*radius;
   this.ball = {
     x: 0,
     y: 0,
-    speed: ballSpeed
+    speed: 360/(this.pathLength/10) * (Math.PI/180)
   };
 
   // calculate distance to inner edge
@@ -20,6 +21,8 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
   // calculate distance to outer edge
   var edgeOutX2 = Math.pow((centerX + (radius + (this.pathWidth - this.pathWidth / 2))) - centerX, 2);
   this.distanceToEdgeOut = Math.sqrt(edgeOutX2);
+
+  this.fadeInterval = null;
 };
 
 // Method that draws the circle and its ball
@@ -57,17 +60,18 @@ Circle.prototype.checkClick = function(mouseX, mouseY){
   var disX2 = Math.pow(this.centerX - mouseX, 2);
   var disY2 = Math.pow(this.centerY - mouseY, 2);
   var distanceToCenter = Math.sqrt(disX2 + disY2);
+  clearInterval(this.fadeInterval);
 
   if(distanceToCenter >= this.distanceToEdgeInn
       && distanceToCenter <= this.distanceToEdgeOut){
-    var startColor = this.color;  // red
+    var startColor = this.color;
+    var endColor = null;
     if(this.ball.speed > 0){
-      var endColor   = {r: 0, g:255, b: 0};  // green
-      fade(this, startColor, endColor, 2000);
+      endColor = {r: 0, g:0, b: 255};  // blue
     }else{
-      var endColor   = {r: 255, g:0, b: 0};  // green
-      fade(this, startColor, endColor, 2000);
+      endColor = {r: 255, g:0, b: 0};  // red
     }
+    this.fadeInterval = fade(this, startColor, endColor, 2000);
     this.ball.speed *= -1;
   }
 };
