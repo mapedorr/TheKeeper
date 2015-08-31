@@ -7,6 +7,8 @@ function eventWindowLoaded() {
   _game.init();
 }
 
+var TEST_STATE = 0;
+
 var Game = function(){
   this.canvas = null;
   this.context = null;
@@ -22,6 +24,11 @@ var Game = function(){
   this.barColor = {
     r: 255, g: 255, b:255
   };
+
+  this.gameStates = [
+    this.testState
+  ];
+
 };
 
 Game.prototype.init = function(){
@@ -64,12 +71,20 @@ Game.prototype.init = function(){
     _me.onMouseClick(e);
   }, false);
 
+  this.switchGameState(TEST_STATE);
+
   setInterval(function(){
-    _me.drawScreen();
+    _me.currentGameStateFunction();
   }, 33);
 };
 
-Game.prototype.drawScreen = function(){
+Game.prototype.switchGameState = function(state) {
+  //set the a new current state function
+  this.currentGameState = state;
+  this.currentGameStateFunction = this.gameStates[state];
+};
+
+Game.prototype.testState = function(){
   // draw world
   this.context.fillStyle = '#FFFFFF';
   this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
