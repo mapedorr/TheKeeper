@@ -8,6 +8,7 @@ function eventWindowLoaded() {
 }
 
 var TEST_STATE = 0;
+var START_STATE = 1;
 
 var Game = function(){
   this.canvas = null;
@@ -15,6 +16,7 @@ var Game = function(){
   this.circles = [];
   this.mouseX = null;
   this.mouseY = null;
+<<<<<<< HEAD
   this.currentGameState = 0;
   this.currentGameStateFunction = null;
   
@@ -24,9 +26,13 @@ var Game = function(){
   this.barColor = {
     r: 255, g: 255, b:255
   };
+=======
+  this.stateObj = null;
+>>>>>>> add start state
 
   this.gameStates = [
-    this.testState
+    this.testState,
+    this.startState
   ];
 
 };
@@ -65,37 +71,29 @@ Game.prototype.init = function(){
     5000,                           // time for lap (in ms)
     15                               // degrees per lap
   ));
-
+  
   // add mouse listeners
   this.canvas.addEventListener("click", function(e){
     _me.onMouseClick(e);
   }, false);
 
-  this.switchGameState(TEST_STATE);
+  //just for now
+  this.switchGameState(START_STATE);
 
   setInterval(function(){
-    _me.currentGameStateFunction();
+    _me.stateObj.update.call(_me);
   }, 33);
 };
 
 Game.prototype.switchGameState = function(state) {
-  //set the a new current state function
-  this.currentGameState = state;
-  this.currentGameStateFunction = this.gameStates[state];
-};
 
-Game.prototype.testState = function(){
-  // draw world
-  this.context.fillStyle = '#FFFFFF';
-  this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-  // draw temperature indicator
-  this.drawTemperatureIndicator();
-
-  // draw the circles
-  for(var i=0; i<this.circles.length; i++){
-    this.circles[i].draw();
+  if (this.stateObj) {
+    this.stateObj.destroy.call(this);
   }
+
+  //set the a new current state function
+  this.stateObj = this.gameStates[state]();
+  this.stateObj.create.call(this);
 };
 
 Game.prototype.onMouseClick = function(e){
@@ -109,6 +107,12 @@ Game.prototype.onMouseClick = function(e){
   }
 };
 
+Game.prototype.drawCircles = function() {
+  for(var i=0; i<this.circles.length; i++){
+    this.circles[i].draw();
+  }
+}
+
 Game.prototype.drawTemperatureIndicator = function(){
   // draw background
   this.context.fillStyle = getRGBText(this.barColor);
@@ -120,4 +124,9 @@ Game.prototype.drawTemperatureIndicator = function(){
   var text = this.temperature.toFixed(2) + "°C";
   var metrics = this.context.measureText(text);
   this.context.fillText(text, this.canvas.width/2 - metrics.width/2, this.canvas.height-5);
+};
+
+Game.prototype.clearCanvas = function() {
+  this.context.fillStyle = '#FFFFFF';
+  this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 };
