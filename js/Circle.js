@@ -1,5 +1,6 @@
 // Object that draws a circle an its ball
-var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth, timeForLap){
+var Circle = function(game, context, radius, centerX, centerY, angle, color, pathWidth, timeForLap, degreesPerLap){
+  this.game = game;
   this.context = context;
   this.radius = radius;
   this.centerX = centerX;
@@ -8,6 +9,8 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
   this.angle = angle;
   this.color = color;
   this.timeForLap = timeForLap;
+  this.degreesPerLap = degreesPerLap;
+  this.temperatureSpeed = (33*degreesPerLap)/timeForLap;
 
   // calculate the length of the circle
   this.pathLength = 2*Math.PI*radius;
@@ -54,6 +57,19 @@ Circle.prototype.draw = function(){
   this.context.arc(this.ball.x, this.ball.y, 15, 0, Math.PI*2, true);
   this.context.closePath();
   this.context.fill();
+
+  // update the temperature
+  this.game.temperature += this.temperatureSpeed;
+
+  // update the bar color
+  if(this.game.temperature > this.game.maxTemperature){
+    return;
+  }
+  this.game.barColor = {
+    r: Math.floor((255*this.game.temperature)/this.game.maxTemperature),
+    g: 0,
+    b: Math.floor((255*this.game.temperature)/(this.game.maxTemperature*-1))
+  };
 };
 
 // Method that verifies if the mouse is inside the area of the path
@@ -75,6 +91,7 @@ Circle.prototype.checkClick = function(mouseX, mouseY){
     }
     this.fadeInterval = fade(this, startColor, endColor, 2000);
     this.ball.speed *= -1;
+    this.temperatureSpeed *= -1;
   }
 };
 
