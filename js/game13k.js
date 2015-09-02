@@ -16,7 +16,6 @@ var Game = function(){
   this.circles = [];
   this.mouseX = null;
   this.mouseY = null;
-<<<<<<< HEAD
   this.currentGameState = 0;
   this.currentGameStateFunction = null;
   
@@ -26,9 +25,8 @@ var Game = function(){
   this.barColor = {
     r: 255, g: 255, b:255
   };
-=======
+
   this.stateObj = null;
->>>>>>> add start state
 
   this.gameStates = [
     this.testState,
@@ -71,7 +69,7 @@ Game.prototype.init = function(){
     5000,                           // time for lap (in ms)
     15                               // degrees per lap
   ));
-  
+
   // add mouse listeners
   this.canvas.addEventListener("click", function(e){
     _me.onMouseClick(e);

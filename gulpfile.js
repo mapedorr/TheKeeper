@@ -10,7 +10,7 @@ var files = [
   './js/states/start.js'
 ];
 
-gulp.task('default', function(){
+gulp.task('minjs', function(){
   return gulp.src(files)
     .pipe(concat('js13k.js'))
     .pipe(uglify())
