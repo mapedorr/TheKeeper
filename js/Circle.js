@@ -78,10 +78,10 @@ Circle.prototype.checkClick = function(mouseX, mouseY){
   var disX2 = Math.pow(this.centerX - mouseX, 2);
   var disY2 = Math.pow(this.centerY - mouseY, 2);
   var distanceToCenter = Math.sqrt(disX2 + disY2);
-  clearInterval(this.fadeInterval);
 
   if(distanceToCenter >= this.distanceToEdgeInn
       && distanceToCenter <= this.distanceToEdgeOut){
+    clearInterval(this.fadeInterval);
     var startColor = this.color;
     var endColor = null;
     if(this.ball.speed > 0){
