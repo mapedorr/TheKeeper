@@ -45,31 +45,6 @@ Game.prototype.init = function(){
   // create the context for drawing elements on the canvas
   this.context = this.canvas.getContext('2d');
 
-  // create the circle
-  this.circles.push(new Circle(this,
-    this.context,                   // canvas context
-    50,                             // radius
-    this.canvas.width/2,            // center x
-    this.canvas.height/2,           // center y
-    0,                              // start ball movement angle
-    {r: 255, g: 0, b: 0},           // path and ball color
-    8,                              // path width
-    2000,                           // time for lap (in ms)
-    10                               // degrees per lap
-  ));
-
-  this.circles.push(new Circle(this,
-    this.context,                   // canvas context
-    200,                             // radius
-    this.canvas.width/2,            // center x
-    this.canvas.height/2,           // center y
-    0,                              // start ball movement angle
-    {r: 255, g: 0, b: 0},           // path and ball color
-    8,                              // path width
-    5000,                           // time for lap (in ms)
-    15                               // degrees per lap
-  ));
-
   // add mouse listeners
   this.canvas.addEventListener("click", function(e){
     _me.onMouseClick(e);
