@@ -3,103 +3,99 @@ function eventWindowLoaded() {
   var canvasElement = document.getElementById("canvas13K");
   canvasElement.width = window.innerWidth;
   canvasElement.height = window.innerHeight;
-  var _game = new Game();
-  _game.init();
+  
+  init();
 }
 
 var TEST_STATE = 0;
 var START_STATE = 1;
 
-var Game = function(){
-  this.canvas = null;
-  this.context = null;
-  this.circles = [];
-  this.mouseX = null;
-  this.mouseY = null;
-  this.currentGameState = 0;
-  this.currentGameStateFunction = null;
-  
-  // maybe this shoud go on the Level object
-  this.temperature = 0;
-  this.maxTemperature = 100;
-  this.barColor = {
-    r: 255, g: 255, b:255
-  };
+var canvas = null;
+var context = null;
+var circles = [];
+var mouseX = null;
+var mouseY = null;
+var currentGameState = 0;
+var currentGameStateFunction = null;
 
-  this.stateObj = null;
-
-  this.gameStates = [
-    this.testState,
-    this.startState
-  ];
-
+// maybe this shoud go on the Level object
+var temperature = 0;
+var maxTemperature = 100;
+var barColor = {
+  r: 255, g: 255, b:255
 };
 
-Game.prototype.init = function(){
-  var _me = this;
-  this.canvas = document.getElementById('canvas13K');
-  if(!this.canvas || !this.canvas.getContext){
+var stateObj = null;
+
+var gameStates = [
+  testState,
+  startState
+];
+
+function init (){
+  canvas = document.getElementById('canvas13K');
+  if(!canvas || !canvas.getContext){
     return;
   }
 
   // create the context for drawing elements on the canvas
-  this.context = this.canvas.getContext('2d');
+  context = canvas.getContext('2d');
 
   // add mouse listeners
-  this.canvas.addEventListener("click", function(e){
-    _me.onMouseClick(e);
+  canvas.addEventListener("click", function(e){
+    onMouseClick(e);
   }, false);
 
   //just for now
-  this.switchGameState(START_STATE);
+  switchGameState(TEST_STATE);
 
   setInterval(function(){
-    _me.stateObj.update.call(_me);
+    stateObj.update();
   }, 33);
 };
 
-Game.prototype.switchGameState = function(state) {
+function switchGameState(state) {
 
-  if (this.stateObj) {
-    this.stateObj.destroy.call(this);
+  if (stateObj) {
+    stateObj.destroy();
   }
 
   //set the a new current state function
-  this.stateObj = this.gameStates[state]();
-  this.stateObj.create.call(this);
+  stateObj = gameStates[state]();
+  stateObj.create();
 };
 
-Game.prototype.onMouseClick = function(e){
+function onMouseClick(e){
   // update the mouse position
-  this.mouseX = e.clientX - this.canvas.offsetLeft;
-  this.mouseY = e.clientY - this.canvas.offsetTop;
+  mouseX = e.clientX - canvas.offsetLeft;
+  mouseY = e.clientY - canvas.offsetTop;
 
   // verify if the click occurs inside the path of any of the circles in the level
-  for(var i=0; i<this.circles.length; i++){
-    this.circles[i].checkClick(this.mouseX, this.mouseY);
+  for(var i=0; i<circles.length; i++){
+    circles[i].checkClick(mouseX, mouseY);
   }
 };
 
-Game.prototype.drawCircles = function() {
-  for(var i=0; i<this.circles.length; i++){
-    this.circles[i].draw();
+function drawCircles() {
+  for(var i=0; i<circles.length; i++){
+    circles[i].draw();
   }
 }
 
-Game.prototype.drawTemperatureIndicator = function(){
+function drawTemperatureIndicator(){
   // draw background
-  this.context.fillStyle = getRGBText(this.barColor);
-  this.context.fillRect(0, this.canvas.height - 40, this.canvas.width, this.canvas.height);
+  context.fillStyle = getRGBText(barColor);
+  context.fillRect(0, canvas.height - 40, canvas.width, canvas.height);
 
   // draw text
-  this.context.font = "40px Sans-serif";
-  this.context.fillStyle = "#F0F0F0";
-  var text = this.temperature.toFixed(2) + "°C";
-  var metrics = this.context.measureText(text);
-  this.context.fillText(text, this.canvas.width/2 - metrics.width/2, this.canvas.height-5);
+  context.font = "40px Sans-serif";
+  context.fillStyle = "#F0F0F0";
+  var text = temperature.toFixed(2) + "°C";
+  var metrics = context.measureText(text);
+  context.fillText(text, canvas.width/2 - metrics.width/2, canvas.height-5);
 };
 
-Game.prototype.clearCanvas = function() {
-  this.context.fillStyle = '#FFFFFF';
-  this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+function clearCanvas() {
+  context.fillStyle = '#FFFFFF';
+  context.fillRect(0, 0, canvas.width, canvas.height);
 };

@@ -1,6 +1,5 @@
 // Object that draws a circle an its ball
-var Circle = function(game, context, radius, centerX, centerY, angle, color, pathWidth, timeForLap, degreesPerLap){
-  var game = game;
+var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth, timeForLap, degreesPerLap){
   var context = context;
   var radius = radius;
   var centerX = centerX;
@@ -58,16 +57,16 @@ var Circle = function(game, context, radius, centerX, centerY, angle, color, pat
     context.fill();
 
     // update the temperature
-    game.temperature += temperatureSpeed;
+    temperature += temperatureSpeed;
 
     // update the bar color
-    if(game.temperature > game.maxTemperature){
+    if(temperature > maxTemperature){
       return;
     }
-    game.barColor = {
-      r: Math.floor((255*game.temperature)/game.maxTemperature),
+    barColor = {
+      r: Math.floor((255*temperature)/maxTemperature),
       g: 0,
-      b: Math.floor((255*game.temperature)/(game.maxTemperature*-1))
+      b: Math.floor((255*temperature)/(maxTemperature*-1))
     };
   };
 
