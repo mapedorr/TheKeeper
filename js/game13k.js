@@ -28,8 +28,8 @@ var barColor = {
 var stateObj = null;
 
 var gameStates = [
-  startState
-  //testState,
+  startState,
+  testState
 ];
 
 function init (){
@@ -47,7 +47,7 @@ function init (){
   }, false);
 
   //just for now
-  switchGameState(START_STATE);
+  switchGameState(TEST_STATE);
 
   setInterval(function(){
     stateObj.update();

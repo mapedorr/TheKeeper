@@ -1,14 +1,6 @@
 // Object that draws a circle an its ball
 var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth, timeForLap, degreesPerLap){
-  var context = context;
-  var radius = radius;
-  var centerX = centerX;
-  var centerY = centerY;
-  var pathWidth = pathWidth;
-  var angle = angle;
-  var color = color;
-  var timeForLap = timeForLap;
-  var degreesPerLap = degreesPerLap;
+
   var temperatureSpeed = (33*degreesPerLap)/timeForLap;
 
   // calculate the length of the circle
@@ -87,7 +79,7 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
       }else{
         endColor = {r: 255, g:0, b: 0};  // red
       }
-      fadeInterval = fade( startColor, endColor, 2000);
+      fadeInterval = fade(startColor, endColor, 2000);
       ball.speed *= -1;
       temperatureSpeed *= -1;
     }
@@ -112,5 +104,32 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
     context.closePath();
     context.fill();
   };
+
+  function fade(startColor, endColor, duration) {
+    var interval = 10;
+    var steps = duration / interval;
+    var step_u = 1.0 / steps;
+    var u = 0.0;
+    var theInterval = setInterval(function() {
+      if (u >= 1.0) {
+        clearInterval(theInterval);
+        return;
+      }
+
+      var r = Math.round(lerp(startColor.r, endColor.r, u));
+      var g = Math.round(lerp(startColor.g, endColor.g, u));
+      var b = Math.round(lerp(startColor.b, endColor.b, u));
+      
+      color = {
+        r: r,
+        g: g,
+        b: b
+      };
+      
+      u += step_u;
+
+    }, interval);
+    return theInterval;
+  }
 
 };
