@@ -7,8 +7,8 @@ function eventWindowLoaded() {
   init();
 }
 
-var TEST_STATE = 0;
-var START_STATE = 1;
+var START_STATE = 0;
+var TEST_STATE = 1;
 
 var canvas = null;
 var context = null;
@@ -28,8 +28,8 @@ var barColor = {
 var stateObj = null;
 
 var gameStates = [
-  testState,
   startState
+  //testState,
 ];
 
 function init (){
@@ -47,7 +47,7 @@ function init (){
   }, false);
 
   //just for now
-  switchGameState(TEST_STATE);
+  switchGameState(START_STATE);
 
   setInterval(function(){
     stateObj.update();

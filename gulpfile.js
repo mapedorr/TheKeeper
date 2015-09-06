@@ -3,11 +3,11 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 
 var files = [
+  './js/states/start.js',
+
   './js/utils.js',
   './js/Circle.js',
-  './js/game13k.js',
-
-  './js/states/start.js'
+  './js/game13k.js'
 ];
 
 gulp.task('minjs', function(){
