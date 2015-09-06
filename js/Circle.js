@@ -1,116 +1,117 @@
 // Object that draws a circle an its ball
 var Circle = function(game, context, radius, centerX, centerY, angle, color, pathWidth, timeForLap, degreesPerLap){
-  this.game = game;
-  this.context = context;
-  this.radius = radius;
-  this.centerX = centerX;
-  this.centerY = centerY;
-  this.pathWidth = pathWidth;
-  this.angle = angle;
-  this.color = color;
-  this.timeForLap = timeForLap;
-  this.degreesPerLap = degreesPerLap;
-  this.temperatureSpeed = (33*degreesPerLap)/timeForLap;
+  var game = game;
+  var context = context;
+  var radius = radius;
+  var centerX = centerX;
+  var centerY = centerY;
+  var pathWidth = pathWidth;
+  var angle = angle;
+  var color = color;
+  var timeForLap = timeForLap;
+  var degreesPerLap = degreesPerLap;
+  var temperatureSpeed = (33*degreesPerLap)/timeForLap;
 
   // calculate the length of the circle
-  this.pathLength = 2*Math.PI*radius;
+  var pathLength = 2*Math.PI*radius;
 
   // calculate the necessary divisions needed for calculating the speed
-  this.pathDivisions = this.pathLength/(timeForLap/33);
-  this.ball = {
+  var pathDivisions = pathLength/(timeForLap/33);
+  var ball = {
     x: 0,
     y: 0,
-    speed: 360/(this.pathLength/this.pathDivisions) * (Math.PI/180)
+    speed: 360/(pathLength/pathDivisions) * (Math.PI/180)
   };
 
   // calculate distance to inner edge
-  var edgeInnX2 = Math.pow((centerX + (radius - (this.pathWidth - this.pathWidth / 2)) - centerX), 2);
-  this.distanceToEdgeInn = Math.sqrt(edgeInnX2);
+  var edgeInnX2 = Math.pow((centerX + (radius - (pathWidth - pathWidth / 2)) - centerX), 2);
+  var distanceToEdgeInn = Math.sqrt(edgeInnX2);
 
   // calculate distance to outer edge
-  var edgeOutX2 = Math.pow((centerX + (radius + (this.pathWidth - this.pathWidth / 2))) - centerX, 2);
-  this.distanceToEdgeOut = Math.sqrt(edgeOutX2);
+  var edgeOutX2 = Math.pow((centerX + (radius + (pathWidth - pathWidth / 2))) - centerX, 2);
+  var distanceToEdgeOut = Math.sqrt(edgeOutX2);
 
-  this.fadeInterval = null;
-};
+  var fadeInterval = null;
 
-// Method that draws the circle and its ball
-Circle.prototype.draw = function(){
-  // draw debug
-  // this.drawDebug();
+  // Method that draws the circle and its ball
+  this.draw = function(){
+    // draw debug
+    // this.drawDebug();
 
-  // draw path
-  this.context.beginPath();
-  this.context.strokeStyle = getRGBText(this.color);
-  this.context.lineWidth = this.pathWidth;
-  this.context.arc(this.centerX, this.centerY, this.radius, 0, Math.PI*2, true);
-  this.context.stroke();
-  this.context.closePath();
+    // draw path
+    context.beginPath();
+    context.strokeStyle = getRGBText(color);
+    context.lineWidth = pathWidth;
+    context.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+    context.stroke();
+    context.closePath();
 
-  this.ball.x = this.centerX + Math.cos(this.angle) * this.radius;
-  this.ball.y = this.centerY + Math.sin(this.angle) * this.radius;
-  this.angle += this.ball.speed;
+    ball.x = centerX + Math.cos(angle) * radius;
+    ball.y = centerY + Math.sin(angle) * radius;
+    angle += ball.speed;
 
-  // draw moving ball
-  this.context.fillStyle = getRGBText(this.color);
-  this.context.beginPath();
-  this.context.arc(this.ball.x, this.ball.y, 15, 0, Math.PI*2, true);
-  this.context.closePath();
-  this.context.fill();
+    // draw moving ball
+    context.fillStyle = getRGBText(color);
+    context.beginPath();
+    context.arc(ball.x, ball.y, 15, 0, Math.PI*2, true);
+    context.closePath();
+    context.fill();
 
-  // update the temperature
-  this.game.temperature += this.temperatureSpeed;
+    // update the temperature
+    game.temperature += temperatureSpeed;
 
-  // update the bar color
-  if(this.game.temperature > this.game.maxTemperature){
-    return;
-  }
-  this.game.barColor = {
-    r: Math.floor((255*this.game.temperature)/this.game.maxTemperature),
-    g: 0,
-    b: Math.floor((255*this.game.temperature)/(this.game.maxTemperature*-1))
-  };
-};
-
-// Method that verifies if the mouse is inside the area of the path
-Circle.prototype.checkClick = function(mouseX, mouseY){
-  // check if the mouse is inside the path
-  var disX2 = Math.pow(this.centerX - mouseX, 2);
-  var disY2 = Math.pow(this.centerY - mouseY, 2);
-  var distanceToCenter = Math.sqrt(disX2 + disY2);
-
-  if(distanceToCenter >= this.distanceToEdgeInn
-      && distanceToCenter <= this.distanceToEdgeOut){
-    clearInterval(this.fadeInterval);
-    var startColor = this.color;
-    var endColor = null;
-    if(this.ball.speed > 0){
-      endColor = {r: 0, g:0, b: 255};  // blue
-    }else{
-      endColor = {r: 255, g:0, b: 0};  // red
+    // update the bar color
+    if(game.temperature > game.maxTemperature){
+      return;
     }
-    this.fadeInterval = fade(this, startColor, endColor, 2000);
-    this.ball.speed *= -1;
-    this.temperatureSpeed *= -1;
-  }
-};
+    game.barColor = {
+      r: Math.floor((255*game.temperature)/game.maxTemperature),
+      g: 0,
+      b: Math.floor((255*game.temperature)/(game.maxTemperature*-1))
+    };
+  };
 
-// Method that draws things for debugging
-Circle.prototype.drawDebug = function(){
-  // draw the center of the circle
-  this.context.fillStyle = "blue";
-  this.context.beginPath();
-  this.context.arc(this.centerX, this.centerY, 1, 0, Math.PI*2, true);
-  this.context.closePath();
-  this.context.fill();
+  // Method that verifies if the mouse is inside the area of the path
+  this.checkClick = function(mouseX, mouseY){
+    // check if the mouse is inside the path
+    var disX2 = Math.pow(centerX - mouseX, 2);
+    var disY2 = Math.pow(centerY - mouseY, 2);
+    var distanceToCenter = Math.sqrt(disX2 + disY2);
 
-  // draw a point in the outer edge and a point in the inner edge
-  this.context.fillStyle = "blue";
-  this.context.beginPath();
-  this.context.arc(this.centerX + this.radius + (this.pathWidth - this.pathWidth / 2),
-    this.centerY, 1, 0, Math.PI*2, true);// inner edge
-  this.context.arc(this.centerX + this.radius - (this.pathWidth - this.pathWidth / 2),
-    this.centerY, 1, 0, Math.PI*2, true);// outer edge
-  this.context.closePath();
-  this.context.fill();
+    if(distanceToCenter >= distanceToEdgeInn
+        && distanceToCenter <= distanceToEdgeOut){
+      clearInterval(fadeInterval);
+      var startColor = color;
+      var endColor = null;
+      if(ball.speed > 0){
+        endColor = {r: 0, g:0, b: 255};  // blue
+      }else{
+        endColor = {r: 255, g:0, b: 0};  // red
+      }
+      fadeInterval = fade( startColor, endColor, 2000);
+      ball.speed *= -1;
+      temperatureSpeed *= -1;
+    }
+  };
+
+  // Method that draws things for debugging
+  this.drawDebug = function(){
+    // draw the center of the circle
+    context.fillStyle = "blue";
+    context.beginPath();
+    context.arc(centerX, centerY, 1, 0, Math.PI*2, true);
+    context.closePath();
+    context.fill();
+
+    // draw a point in the outer edge and a point in the inner edge
+    context.fillStyle = "blue";
+    context.beginPath();
+    context.arc(centerX + radius + (pathWidth - pathWidth / 2),
+      centerY, 1, 0, Math.PI*2, true);// inner edge
+    context.arc(centerX + radius - (pathWidth - pathWidth / 2),
+      centerY, 1, 0, Math.PI*2, true);// outer edge
+    context.closePath();
+    context.fill();
+  };
+
 };
