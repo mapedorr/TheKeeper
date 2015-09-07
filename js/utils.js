@@ -25,3 +25,11 @@ function fade(color, startColor, endColor, duration) {
   }, interval);
   return theInterval;
 }
+
+function calculateTemperature(temperature){
+  for(var i=0; i<circles.length; i++){
+    // update the temperature
+    temperature += circles[i].temperatureSpeed;
+    return temperature;
+  }
+}

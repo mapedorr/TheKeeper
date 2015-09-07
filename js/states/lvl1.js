@@ -1,6 +1,10 @@
 /* Test state */
 
 function testState() {
+  // Set the initial temperature
+  var temperature = 70;
+  var maxTemperature = 100;
+  var temperatureRange = [-50, 10];
 
   return {
 
@@ -13,7 +17,7 @@ function testState() {
         0,                              // start ball movement angle
         {r: 255, g: 0, b: 0},           // path and ball color
         8,                              // path width
-        5000,                           // time for lap (in ms)
+        2000,                           // time for lap (in ms)
         20                               // degrees per lap
       ));
     },
@@ -21,12 +25,25 @@ function testState() {
     update: function() {
       // clear canvas
       clearCanvas();
-      
-      // draw temperature indicator
-      drawTemperatureIndicator();
 
       // draw the circles
       drawCircles();
+
+      // draw temperature indicators
+      // draw temperature objective range
+      drawTemperatureRange(temperatureRange, maxTemperature);
+
+      // calculate the temperature of the level
+      temperature = calculateTemperature(temperature);
+      if(Math.abs(temperature) > maxTemperature){
+        temperature = (temperature < 0) ? maxTemperature*-1 : maxTemperature;
+      }
+
+      // update the moveable indicator
+      drawMoveableTemperature(temperature, maxTemperature);
+
+      // update the bar text and color
+      drawTemperatureBar(temperature, maxTemperature);
     },
 
     destroy: function() {
