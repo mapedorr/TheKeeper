@@ -48,6 +48,7 @@ function testState() {
 
       // update the bar text and color
       drawTemperatureBar(temperature, maxTemperature);
+      drawTemperatureText(temperature);
 
       // draw temperature objective range
       drawTemperatureRange(temperatureRange, maxTemperature);

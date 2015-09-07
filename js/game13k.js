@@ -52,7 +52,7 @@ function init (){
   setInterval(function(){
     stateObj.update();
   }, 33);
-};
+}
 
 function switchGameState(state) {
 
@@ -152,14 +152,14 @@ function drawTemperatureBar(temperature, maxTemperature){
     b: Math.floor((255*temperature)/(maxTemperature*-1))
   };
 
-  // draw background
   context.fillStyle = getRGBText(barColor);
   context.fillRect(0, canvas.height - 40, canvas.width, canvas.height);
+}
 
-  // draw text
+function drawTemperatureText(temperature) {
   context.font = "40px Sans-serif";
   context.fillStyle = "#F0F0F0";
   var text = temperature.toFixed(2) + "°C";
   var metrics = context.measureText(text);
   context.fillText(text, canvas.width/2 - metrics.width/2, canvas.height-5);
-};
+}
