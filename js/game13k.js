@@ -8,7 +8,7 @@ function eventWindowLoaded() {
 }
 
 var START_STATE = 0;
-var TEST_STATE = 1;
+var LEVEL1_STATE = 1;
 
 var canvas = null;
 var context = null;
@@ -19,7 +19,7 @@ var currentGameState = 0;
 var currentGameStateFunction = null;
 
 // maybe this shoud go on the Level object
-var temperature = 0;
+var temperature = 50;
 var maxTemperature = 100;
 var barColor = {
   r: 255, g: 255, b:255
@@ -47,7 +47,7 @@ function init (){
   }, false);
 
   //just for now
-  switchGameState(TEST_STATE);
+  switchGameState(LEVEL1_STATE);
 
   setInterval(function(){
     stateObj.update();
