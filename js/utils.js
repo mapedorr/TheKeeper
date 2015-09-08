@@ -26,10 +26,11 @@ function fade(color, startColor, endColor, duration) {
   return theInterval;
 }
 
-function calculateTemperature(temperature){
+function calculateDeltaTemperature(){
+  var dt = 0;
+  //add the temperature for each circle
   for(var i=0; i<circles.length; i++){
-    // update the temperature
-    temperature += circles[i].temperatureSpeed;
-    return temperature;
+    dt += circles[i].temperatureSpeed;
   }
+  return dt;
 }

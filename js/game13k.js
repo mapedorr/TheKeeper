@@ -47,7 +47,7 @@ function init (){
   }, false);
 
   //just for now
-  switchGameState(LEVEL1_STATE);
+  switchGameState(START_STATE);
 
   setInterval(function(){
     stateObj.update();
@@ -147,9 +147,9 @@ function drawMoveableTemperature(temperature, maxTemperature){
 function drawTemperatureBar(temperature, maxTemperature){
   // update the bar color
   barColor = {
-    r: Math.floor((255*temperature)/maxTemperature),
+    r: Math.floor(123 + (temperature*(123/maxTemperature))),
     g: 0,
-    b: Math.floor((255*temperature)/(maxTemperature*-1))
+    b: Math.floor(123 - (temperature*(123/maxTemperature))) 
   };
 
   context.fillStyle = getRGBText(barColor);

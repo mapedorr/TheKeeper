@@ -3,10 +3,10 @@ function startState() {
   var startText = "Click the Circle to start";
   var startTextM = null;
 
-  function _create() {
+  var temperature = 0;
+  var maxTemperature = 200;
 
-    temperature = -200;
-    maxTemperature = 200;
+  function _create() {
 
     circles.push(new Circle(
       context,                   // canvas context
@@ -25,8 +25,10 @@ function startState() {
   }
 
   function _update() {
-    console.log('temp', temperature);
-    if (temperature < -200) {
+    temperature += calculateDeltaTemperature();
+
+    if (Math.abs(temperature) > maxTemperature) {
+      temperature = (temperature > 0) ? maxTemperature : -maxTemperature 
     }
   }
 
@@ -43,9 +45,9 @@ function startState() {
 
       clearCanvas();      
       drawCircles();
-      drawTemperatureIndicator();
-      drawStartText();
 
+      drawTemperatureBar(temperature, maxTemperature);
+      drawStartText();
     },
 
     destroy: function() {
