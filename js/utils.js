@@ -34,3 +34,14 @@ function calculateDeltaTemperature(){
   }
   return dt;
 }
+
+function setTextWidth(objText) {
+  context.font = objText.font;
+  objText.width = context.measureText(objText.text).width;
+}
+
+function fillText(objText, x, y) {
+  context.fillStyle = objText.color;
+  context.font = objText.font;
+  context.fillText(objText.text, x, y)
+}

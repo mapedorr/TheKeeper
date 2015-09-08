@@ -1,7 +1,16 @@
 function startState() {
 
-  var startText = "Click the Circle to start";
-  var startTextM = null;
+  var titleText = {
+    text: "THE KEEPER",
+    font: "45px Sans-serif",
+    color: "#00F"
+  }
+
+  var startText = {
+    text: "Click the Circle to start",
+    font: "30px Sans-serif",
+    color: "#F0F0F0"
+  }
 
   var temperature = 0;
   var maxTemperature = 200;
@@ -20,8 +29,8 @@ function startState() {
       300                              // degrees per lap
     ));
 
-    context.font = "30px Sans-serif";
-    startTextM = context.measureText(startText);
+    setTextWidth(titleText);
+    setTextWidth(startText);
   }
 
   function _update() {
@@ -30,11 +39,10 @@ function startState() {
     if (Math.abs(temperature) > maxTemperature) {
       temperature = (temperature > 0) ? maxTemperature : -maxTemperature 
     }
-  }
 
-  function drawStartText() {
-    context.fillStyle = "#F0F0F0";
-    context.fillText(startText, canvas.width/2 - startTextM.width/2, canvas.height-5);
+    if (temperature == -maxTemperature) {
+      console.log('coronado');
+    }
   }
 
   return {
@@ -46,8 +54,10 @@ function startState() {
       clearCanvas();      
       drawCircles();
 
+      fillText(titleText, canvas.width/2 - titleText.width/2, 50);
+
       drawTemperatureBar(temperature, maxTemperature);
-      drawStartText();
+      fillText(startText, canvas.width/2 - startText.width/2, canvas.height - 10);
     },
 
     destroy: function() {
