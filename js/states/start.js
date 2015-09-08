@@ -41,7 +41,7 @@ function startState() {
     }
 
     if (temperature == -maxTemperature) {
-      console.log('coronado');
+      switchGameState(INTRO_STATE);
     }
   }
 

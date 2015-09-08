@@ -4,6 +4,8 @@ var uglify = require('gulp-uglify');
 
 var files = [
   './js/states/start.js',
+  './js/states/intro.js',
+  './js/states/lvl1.js',
 
   './js/utils.js',
   './js/Circle.js',

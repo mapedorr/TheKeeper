@@ -9,6 +9,7 @@ function eventWindowLoaded() {
 
 var START_STATE = 0;
 var LEVEL1_STATE = 1;
+var INTRO_STATE = 2;
 
 var canvas = null;
 var context = null;
@@ -29,7 +30,8 @@ var stateObj = null;
 
 var gameStates = [
   startState,
-  testState
+  testState,
+  introState
 ];
 
 function init (){

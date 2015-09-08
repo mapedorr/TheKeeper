@@ -45,3 +45,7 @@ function fillText(objText, x, y) {
   context.font = objText.font;
   context.fillText(objText.text, x, y)
 }
+
+function center(c, p) {
+  return p/2 - c/2;
+}

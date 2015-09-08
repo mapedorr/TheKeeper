@@ -37,7 +37,7 @@ function testState() {
       // draw temperature indicators
       // calculate the temperature of the level
       if(!objectiveReached){
-        temperature = calculateTemperature(temperature);
+        temperature += calculateDeltaTemperature();
       }
       if(Math.abs(temperature) > maxTemperature){
         temperature = (temperature < 0) ? maxTemperature*-1 : maxTemperature;
