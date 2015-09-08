@@ -4,11 +4,16 @@ function testState() {
   // Set the initial temperature
   var temperature = 70;
   var maxTemperature = 100;
-  var temperatureRange = [-50, 10];
+  var temperatureRange = [-90, 10];
+  var inRangeTimer = null;
+  var reqTimeInsideRange = null;// in ms
+  var msInsideRange = 0;
+  var objectiveReached = false;
 
   return {
 
     create: function() {
+      reqTimeInsideRange = 5000;
       circles.push(new Circle(
         context,                   // canvas context
         200,                             // radius
@@ -18,7 +23,7 @@ function testState() {
         {r: 255, g: 0, b: 0},           // path and ball color
         8,                              // path width
         2000,                           // time for lap (in ms)
-        20                               // degrees per lap
+        30                               // degrees per lap
       ));
     },
 
@@ -30,11 +35,10 @@ function testState() {
       drawCircles();
 
       // draw temperature indicators
-      // draw temperature objective range
-      drawTemperatureRange(temperatureRange, maxTemperature);
-
       // calculate the temperature of the level
-      temperature = calculateTemperature(temperature);
+      if(!objectiveReached){
+        temperature = calculateTemperature(temperature);
+      }
       if(Math.abs(temperature) > maxTemperature){
         temperature = (temperature < 0) ? maxTemperature*-1 : maxTemperature;
       }
@@ -44,10 +48,29 @@ function testState() {
 
       // update the bar text and color
       drawTemperatureBar(temperature, maxTemperature);
+
+      // draw temperature objective range
+      drawTemperatureRange(temperatureRange, maxTemperature);
+
+      // verify if the moveable indicator is inside the temperature range limits
+      if(temperature <= temperatureRange[1]
+          && temperature >= temperatureRange[0]){
+        // initiate the timer of objective reached
+        inRangeTimer = inRangeTimer || setInterval(this.increaseTimeInRange, 1000);
+      }else{
+        // msInsideRange = 0;
+      }
     },
 
     destroy: function() {
       circles = [];
+    },
+
+    increaseTimeInRange: function(){
+      msInsideRange+=1000;
+      if(msInsideRange >= reqTimeInsideRange){
+        objectiveReached = true;
+      }
     }
   };
 }
