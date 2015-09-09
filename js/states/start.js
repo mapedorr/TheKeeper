@@ -1,7 +1,7 @@
 function startState() {
 
   var titleText = {
-    text: "THE KEEPER",
+    text: "The Keeper",
     font: "45px Sans-serif",
     color: "#00F"
   }
@@ -14,6 +14,7 @@ function startState() {
 
   var temperature = 0;
   var maxTemperature = 200;
+  var temperatureRange = [-200, 0];
 
   function _create() {
 
@@ -55,6 +56,27 @@ function startState() {
       drawCircles();
 
       fillText(titleText, canvas.width/2 - titleText.width/2, 50);
+
+      // draw temperature indicators
+      // calculate the temperature of the level
+      // if(!objectiveReached){
+      //   temperature += calculateDeltaTemperature();
+      // }
+
+      temperature += calculateDeltaTemperature();
+      if(Math.abs(temperature) > maxTemperature){
+        temperature = (temperature < 0) ? maxTemperature*-1 : maxTemperature;
+      }
+
+      // update the moveable indicator
+      drawMoveableTemperature(temperature, maxTemperature);
+
+      // update the bar text and color
+      // drawTemperatureBar(temperature, maxTemperature);
+      // drawTemperatureText(temperature);
+
+      // draw temperature objective range
+      drawTemperatureRange(temperatureRange, maxTemperature);
 
       drawTemperatureBar(temperature, maxTemperature);
       fillText(startText, canvas.width/2 - startText.width/2, canvas.height - 10);
