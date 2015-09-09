@@ -49,3 +49,12 @@ function fillText(objText, x, y) {
 function center(c, p) {
   return p/2 - c/2;
 }
+
+function genNick() {
+  var today = new Date();
+  var month = String.fromCharCode(today.getMonth()+65); //A, B, C
+  var hour = today.getTime()%100;
+  hour = hour < 9 ? '0'+hour : hour;
+
+  return ''+today.getDay()+today.getYear()+month;
+}

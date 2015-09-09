@@ -5,19 +5,19 @@ function introState() {
   
   /* first step texts */
   var hiText = {
-    text: "Hi",
+    text: "",
     font: "100px Sans-serif",
     color: "#313131"
   };
 
   var keeperText = {
-    text: "keeper",
+    text: "keeper!",
     font: "90px Sans-serif",
     color: "#313131"
   };
 
   var nickText = {
-    text: "0015X",
+    text: "",
     font: "95px Sans-serif",
     color: "#000"
   };
@@ -72,6 +72,23 @@ function introState() {
 
   return {
     create: function() {
+      //check if localStorage is available
+      if (typeof(Storage) !== "undefined") {
+
+        //get nick if already exists
+        var nick = localStorage.getItem("keeper-nick");
+
+        if (!nick){ //check if doesnt exist a nick yet
+          hiText.text = "Hi";  //greet for the first very
+          nick = genNick(); //get a random nick
+          localStorage.setItem("keeper-nick", nick);  //storage the nick
+        }
+        else {
+          hiText.text = "Hi again";  //welcome back keeper
+        }
+        
+        nickText.text = nick; //set the nick text
+      }
 
       setTextWidth(hiText);
       setTextWidth(keeperText);
@@ -91,7 +108,7 @@ function introState() {
         temperature = -maxTemperature;
         step += 1;
 
-        if (step >= steps.length) {
+        if (step => steps.length) {
           switchGameState(LEVEL1_STATE);
         }
       }
