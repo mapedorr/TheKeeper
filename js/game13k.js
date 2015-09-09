@@ -19,9 +19,6 @@ var mouseY = null;
 var currentGameState = 0;
 var currentGameStateFunction = null;
 
-// maybe this shoud go on the Level object
-// var temperature = 50;
-// var maxTemperature = 100;
 var barColor = {
   r: 255, g: 255, b:255
 };
@@ -49,7 +46,7 @@ function init (){
   }, false);
 
   //just for now
-  switchGameState(START_STATE);
+  switchGameState(INTRO_STATE);
 
   setInterval(function(){
     stateObj.update();
@@ -90,7 +87,6 @@ function clearCanvas() {
 }
 
 function drawTriangle(middlePosX, color){
-  // context.strokeStyle = getRGBText(color);
   context.fillStyle = getRGBText(color);
   context.lineWidth = 2;
   context.lineCap = 'square';
@@ -99,7 +95,6 @@ function drawTriangle(middlePosX, color){
   context.lineTo(middlePosX, canvas.height - 40);
   context.lineTo(middlePosX + 10, canvas.height - 60);
   context.lineTo(middlePosX - 10, canvas.height - 60);
-  // context.stroke();
   context.fill();
   context.closePath();
 }
@@ -115,6 +110,13 @@ function drawDashedLine(xPos, color){
   context.closePath();
 }
 
+function drawSquare(xPos, yPos, width, height){
+  context.strokeStyle = "#000";
+  context.lineCap = 'square';
+  context.lineWidth = 6;
+  context.strokeRect(xPos, yPos, width, height);
+}
+
 function drawTemperatureRange(limits, maxTemperature){
   for (var i = limits.length - 1; i >= 0; i--) {
     var triangleXPos = (Math.abs(limits[i]) * (canvas.width/2))/maxTemperature;
@@ -128,11 +130,9 @@ function drawTemperatureRange(limits, maxTemperature){
     }else{
       triangleXPos = (canvas.width/2) + triangleXPos;
     }
-    
-    // drawTriangle(triangleXPos, triangleColor);
-    // drawDashedLine(triangleXPos, triangleColor);
+
     drawTriangle(triangleXPos, {r:31,g:31,b:31});
-    drawDashedLine(triangleXPos, {r:255,g:255,b:255});
+    drawDashedLine(triangleXPos, {r:31,g:31,b:31});
   };
 }
 

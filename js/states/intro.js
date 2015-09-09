@@ -1,12 +1,31 @@
 function introState() {
 
-  var temperature = -200;
   var maxTemperature = 200;
-  
+  var temperatureRange = [-70, 70];
+  var temperature = temperatureRange[0];
+  var messages = [
+    "loading machine propulsors",
+    "detecting user mood",
+    "cleaning ship",
+    "preparing coffee",
+    "balancing -t- indicators",
+    "loading nap pills",
+    "asking for indications",
+    "signing a song",
+    "holding breath",
+    "thinking a joke",
+    "starting server",
+    "being hypocritical",
+    "flirting with OS"
+  ];
+  var loadingText = null;
+
   /* first step texts */
   var hiText = {
     text: "",
     font: "100px Sans-serif",
+    text: "Hi",
+    font: "70px Sans-serif",
     color: "#313131"
   };
 
@@ -57,6 +76,7 @@ function introState() {
     fillText(hiText, center(hiText.width, canvas.width), 100);
     fillText(keeperText, center(keeperText.width, canvas.width), 210);
     fillText(nickText, center(nickText.width, canvas.width), 390);
+    drawSquare(center(nickText.width + 90, canvas.width), 300, nickText.width + 90, 110);
   }
 
   function secondStep() {
@@ -99,14 +119,21 @@ function introState() {
       setTextWidth(step1Text);
       setTextWidth(msg1Text);
 
+      loadingText = {
+        text: messages[Math.floor(Math.random(messages.length) * messages.length)],
+        font: "40px Sans-serif",
+        color: "#F0F0F0"
+      };
+      setTextWidth(loadingText);
+
     }, 
     update: function() {
 
-      temperature += 5;
+      temperature += 1;
 
       if (temperature > maxTemperature) {
         temperature = -maxTemperature;
-        step += 1;
+        // step += 1;
 
         if (step => steps.length) {
           switchGameState(LEVEL1_STATE);
@@ -118,7 +145,19 @@ function introState() {
       steps[step]();
 
       drawTemperatureBar(temperature, maxTemperature);
-      drawTemperatureText(temperature);
+      // get loading message
+      if(Math.abs(temperature%50) == 0){
+        loadingText.text= messages[Math.floor(Math.random(messages.length) * messages.length)];
+        setTextWidth(loadingText);
+      }
+      fillText(loadingText, center(loadingText.width, canvas.width), canvas.height-5);
+      // drawTemperatureText(temperature);
+
+      // draw temperature objective range
+      drawTemperatureRange(temperatureRange, maxTemperature);
+
+      // update the moveable indicator
+      drawMoveableTemperature(temperature, maxTemperature);
     },
     destroy: function() {
 

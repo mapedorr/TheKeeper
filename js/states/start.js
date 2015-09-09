@@ -1,13 +1,19 @@
 function startState() {
 
-  var titleText = {
-    text: "The Keeper",
-    font: "45px Sans-serif",
-    color: "#00F"
+  var titleText_1 = {
+    text: "The",
+    font: "65px Sans-serif",
+    color: "#313131"
+  }
+
+  var titleText_2 = {
+    text: "Keeper",
+    font: "70px Sans-serif",
+    color: "#313131"
   }
 
   var startText = {
-    text: "Click the Circle to start",
+    text: "Click the circle to start",
     font: "30px Sans-serif",
     color: "#F0F0F0"
   }
@@ -30,7 +36,8 @@ function startState() {
       300                              // degrees per lap
     ));
 
-    setTextWidth(titleText);
+    setTextWidth(titleText_1);
+    setTextWidth(titleText_2);
     setTextWidth(startText);
   }
 
@@ -55,13 +62,8 @@ function startState() {
       clearCanvas();      
       drawCircles();
 
-      fillText(titleText, canvas.width/2 - titleText.width/2, 50);
-
-      // draw temperature indicators
-      // calculate the temperature of the level
-      // if(!objectiveReached){
-      //   temperature += calculateDeltaTemperature();
-      // }
+      fillText(titleText_1, canvas.width/2 - titleText_1.width/2, 90);
+      fillText(titleText_2, canvas.width/2 - titleText_2.width/2, 170);
 
       temperature += calculateDeltaTemperature();
       if(Math.abs(temperature) > maxTemperature){
@@ -72,14 +74,11 @@ function startState() {
       drawMoveableTemperature(temperature, maxTemperature);
 
       // update the bar text and color
-      // drawTemperatureBar(temperature, maxTemperature);
-      // drawTemperatureText(temperature);
+      drawTemperatureBar(temperature, maxTemperature);
+      fillText(startText, canvas.width/2 - startText.width/2, canvas.height - 10);
 
       // draw temperature objective range
       drawTemperatureRange(temperatureRange, maxTemperature);
-
-      drawTemperatureBar(temperature, maxTemperature);
-      fillText(startText, canvas.width/2 - startText.width/2, canvas.height - 10);
     },
 
     destroy: function() {
