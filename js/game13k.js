@@ -75,15 +75,15 @@ function onMouseClick(e){
   }
 }
 
+function clearCanvas() {
+  context.fillStyle = '#191919';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 function drawCircles() {
   for(var i=0; i<circles.length; i++){
     circles[i].draw();
   }
-}
-
-function clearCanvas() {
-  context.fillStyle = '#FFFFFF';
-  context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 function drawTriangle(middlePosX, color){
@@ -111,7 +111,7 @@ function drawDashedLine(xPos, color){
 }
 
 function drawSquare(xPos, yPos, width, height){
-  context.strokeStyle = "#000";
+  context.strokeStyle = "#FDFDFD";
   context.lineCap = 'square';
   context.lineWidth = 6;
   context.strokeRect(xPos, yPos, width, height);
@@ -131,8 +131,8 @@ function drawTemperatureRange(limits, maxTemperature){
       triangleXPos = (canvas.width/2) + triangleXPos;
     }
 
-    drawTriangle(triangleXPos, {r:31,g:31,b:31});
-    drawDashedLine(triangleXPos, {r:31,g:31,b:31});
+    drawTriangle(triangleXPos, {r:230,g:230,b:230});
+    drawDashedLine(triangleXPos, {r:21,g:21,b:21});
   };
 }
 

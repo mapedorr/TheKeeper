@@ -6,18 +6,15 @@ function introState() {
   var temperatureSpeed = 0.5;
   var objectiveTemperature = temperatureRange[1];
   var messages = [
-    "loading machine propulsors",
+    "loading propulsors",
     "detecting user mood",
-    "cleaning ship",
+    "cleaning dishes",
     "preparing coffee",
-    "balancing -t- indicators",
     "taking nap pills",
     "asking for indications",
-    "signing a song",
+    "writing a song",
     "holding breath",
     "thinking a joke",
-    "starting server",
-    "being hypocritical",
     "flirting with OS"
   ];
   var loadingText = null;
@@ -25,47 +22,52 @@ function introState() {
   /* first step texts */
   var hiText = {
     text: "",
-    font: "100px Sans-serif",
-    text: "Hi",
     font: "70px Sans-serif",
-    color: "#313131"
+    text: "Hi",
+    color: "#FDFDFD"
   };
 
   var keeperText = {
-    text: "keeper!",
-    font: "90px Sans-serif",
-    color: "#313131"
+    text: "keeper",
+    font: "85px Sans-serif",
+    color: "#FDFDFD"
   };
 
   var nickText = {
     text: "",
     font: "95px Sans-serif",
-    color: "#000"
+    color: "#F0F0F0"
   };
 
   /* second step texts */
   var skillsText = {
     text: "Skills",
-    font: "90px Sans-serif",
-    color: "#313131"
+    font: "80px Sans-serif",
+    color: "#FAFAFA"
   };
 
   var testsText = {
     text: "Tests",
-    font: "90px Sans-serif",
-    color: "#313131"
+    font: "80px Sans-serif",
+    color: "#FAFAFA"
   };
 
   var step1Text = {
     text: "Step 1:",
     font: "60px Sans-serif",
-    color: "#313131"
+    color: "#FAFAFA"
   };
 
   var msg1Text = {
     text: "Cold the room",
     font: "40px Sans-serif",
-    color: "#313131"
+    color: "#FAFAFA"
+  };
+
+  var objectiveText = {
+    text: "-100°C < t < -10°C",
+    font: "35px Sans-serif",
+    color: "#FAFAFA"
   };
 
   var step = 0;
@@ -83,12 +85,14 @@ function introState() {
 
   function secondStep() {
     fillText(skillsText, center(skillsText.width, canvas.width) - 30, 100);
-    fillText(testsText, center(testsText.width, canvas.width) + 30, 200);
+    fillText(testsText, center(testsText.width, canvas.width) + 30, 180);
 
     context.fillRect(0, 230, canvas.width, 5);
 
-    fillText(step1Text, center(step1Text.width, canvas.width), 300);
-    fillText(msg1Text, center(msg1Text.width, canvas.width), 400);
+    fillText(step1Text, center(step1Text.width, canvas.width), 350);
+    fillText(msg1Text, center(msg1Text.width, canvas.width), 450);
+    fillText(objectiveText, center(objectiveText.width, canvas.width), 510);
+    drawSquare(center(msg1Text.width + 90, canvas.width), 395, msg1Text.width + 90, 140);
 
   }
 
@@ -120,6 +124,7 @@ function introState() {
       setTextWidth(testsText);
       setTextWidth(step1Text);
       setTextWidth(msg1Text);
+      setTextWidth(objectiveText);
 
       loadingText = {
         text: messages[Math.floor(Math.random(messages.length) * messages.length)],
@@ -140,6 +145,7 @@ function introState() {
 
         if (step >= steps.length) {
           switchGameState(LEVEL1_STATE);
+          return;
         }
       }
 

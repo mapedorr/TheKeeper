@@ -4,7 +4,7 @@ function testState() {
   // Set the initial temperature
   var temperature = 70;
   var maxTemperature = 100;
-  var temperatureRange = [-90, 10];
+  var temperatureRange = [-100, -10];
   var inRangeTimer = null;
   var reqTimeInsideRange = null;// in ms
   var msInsideRange = 0;

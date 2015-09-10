@@ -3,13 +3,13 @@ function startState() {
   var titleText_1 = {
     text: "The",
     font: "65px Sans-serif",
-    color: "#313131"
+    color: "#FFF"
   }
 
   var titleText_2 = {
     text: "Keeper",
     font: "70px Sans-serif",
-    color: "#313131"
+    color: "#FFF"
   }
 
   var startText = {
@@ -20,7 +20,7 @@ function startState() {
 
   var temperature = 0;
   var maxTemperature = 200;
-  var temperatureRange = [-200, 0];
+  var temperatureRange = [-180];
 
   function _create() {
 
