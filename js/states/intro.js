@@ -155,8 +155,13 @@ function introState() {
 
       drawTemperatureBar(temperature, maxTemperature);
       // get loading message
-      if(Math.abs(temperature%50) == 0){
-        loadingText.text= messages[Math.floor(Math.random(messages.length) * messages.length)];
+      if(step == 0){
+        if(Math.abs(temperature%50) == 0){
+          loadingText.text= messages[Math.floor(Math.random(messages.length) * messages.length)];
+          setTextWidth(loadingText);
+        }
+      }else{
+        loadingText.text = "prepare to start";
         setTextWidth(loadingText);
       }
       fillText(loadingText, center(loadingText.width, canvas.width), canvas.height-5);
