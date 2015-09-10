@@ -46,7 +46,7 @@ function init (){
   }, false);
 
   //just for now
-  switchGameState(INTRO_STATE);
+  switchGameState(START_STATE);
 
   setInterval(function(){
     stateObj.update();
