@@ -8,12 +8,27 @@ function testState() {
   var inRangeTimer = null;
   var reqTimeInsideRange = null;// in ms
   var msInsideRange = 0;
+  var timeForLvl = 0;// in s
+  var lvlTimer = null;
   var objectiveReached = false;
+
+  /* level completed */
+  var tempRestText = {
+    text: "Temperature restored",
+    font: "60px Sans-serif",
+    color: "#FDFDFD"
+  };
+  var svdLifesText = {
+    text: "XX saved species",
+    font: "40px Sans-serif",
+    color: "#F0F0F0"
+  };
 
   return {
 
     create: function() {
       reqTimeInsideRange = 5000;
+      timeForLvl = 25;
       circles.push(new Circle(
         context,                   // canvas context
         200,                             // radius
@@ -25,13 +40,32 @@ function testState() {
         2000,                           // time for lap (in ms)
         30                               // degrees per lap
       ));
+
+      // configure texts for level completed
+      setTextWidth(tempRestText);
+      setTextWidth(svdLifesText);
+
+      lvlTimer = setInterval(function() {
+        if(!objectiveReached){
+          timeForLvl--;
+        }
+      }, 1000);
     },
 
     update: function() {
       // clear canvas
       clearCanvas();
 
+      // draw level timer indicator
+      drawTimeBar(msInsideRange, timeForLvl);
+
       // draw the circles
+      if(objectiveReached){
+        for(var i=0; i<circles.length; i++){
+          // console.log("circles[i]", circles[i]);
+          circles[i].ball.speed = 0;
+        }
+      }
       drawCircles();
 
       // draw temperature indicators
@@ -61,6 +95,12 @@ function testState() {
       }else{
         // msInsideRange = 0;
       }
+
+      if(objectiveReached){
+        // draw texts of level completed
+        fillText(tempRestText, center(tempRestText.width, canvas.width), canvas.height/2);
+        fillText(svdLifesText, center(svdLifesText.width, canvas.width), canvas.height/2 + 70);
+      }
     },
 
     destroy: function() {
@@ -68,7 +108,9 @@ function testState() {
     },
 
     increaseTimeInRange: function(){
-      msInsideRange+=1000;
+      if(!objectiveReached){
+        msInsideRange+=1000;
+      }
       if(msInsideRange >= reqTimeInsideRange){
         objectiveReached = true;
       }

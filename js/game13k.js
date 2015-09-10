@@ -158,6 +158,26 @@ function drawTemperatureBar(temperature, maxTemperature){
   context.fillRect(0, canvas.height - 40, canvas.width, canvas.height);
 }
 
+function drawTimeBar(timeInsideRange, timeForLvl){
+  context.fillStyle = getRGBText({r: 46, g: 51, b: 51});
+  context.fillRect(0, 0, canvas.width/2, canvas.height - (canvas.height - 40));
+  context.fillStyle = getRGBText({r: 70, g: 77, b: 77});
+  context.fillRect(canvas.width/2, 0, canvas.width/2, canvas.height - (canvas.height - 40));
+  context.font = "40px Sans-serif";
+  context.fillStyle = "#F0F0F0";
+  if(timeInsideRange){
+    var text = timeInsideRange/1000 + " sec";
+    var metrics = context.measureText(text);
+    context.fillText(text, canvas.width*0.25 - metrics.width/2, 35);
+  }
+
+  if(timeForLvl){
+    var text = timeForLvl + " sec";
+    var metrics = context.measureText(text);
+    context.fillText(text, canvas.width*0.75 - metrics.width/2, 35);
+  }
+}
+
 function drawTemperatureText(temperature) {
   context.font = "40px Sans-serif";
   context.fillStyle = "#F0F0F0";

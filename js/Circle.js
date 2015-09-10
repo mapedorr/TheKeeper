@@ -5,7 +5,7 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
 
   // calculate the necessary divisions needed for calculating the speed
   var pathDivisions = pathLength/(timeForLap/33);
-  var ball = {
+  this.ball = {
     x: 0,
     y: 0,
     speed: 360/(pathLength/pathDivisions) * (Math.PI/180)
@@ -37,14 +37,14 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
     context.stroke();
     context.closePath();
 
-    ball.x = centerX + Math.cos(angle) * radius;
-    ball.y = centerY + Math.sin(angle) * radius;
-    angle += ball.speed;
+    this.ball.x = centerX + Math.cos(angle) * radius;
+    this.ball.y = centerY + Math.sin(angle) * radius;
+    angle += this.ball.speed;
 
     // draw moving ball
     context.fillStyle = getRGBText(color);
     context.beginPath();
-    context.arc(ball.x, ball.y, 15, 0, Math.PI*2, true);
+    context.arc(this.ball.x, this.ball.y, 15, 0, Math.PI*2, true);
     context.closePath();
     context.fill();
   };
@@ -61,13 +61,13 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
       clearInterval(fadeInterval);
       var startColor = this.color;
       var endColor = null;
-      if(ball.speed > 0){
+      if(this.ball.speed > 0){
         endColor = {r: 0, g:0, b: 255};  // blue
       }else{
         endColor = {r: 255, g:0, b: 0};  // red
       }
       fadeInterval = fade(this.color, startColor, endColor, 2000);
-      ball.speed *= -1;
+      this.ball.speed *= -1;
       this.temperatureSpeed *= -1;
     }
   };
