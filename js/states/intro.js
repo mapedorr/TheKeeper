@@ -3,13 +3,15 @@ function introState() {
   var maxTemperature = 200;
   var temperatureRange = [-70, 70];
   var temperature = temperatureRange[0];
+  var temperatureSpeed = 0.5;
+  var objectiveTemperature = temperatureRange[1];
   var messages = [
     "loading machine propulsors",
     "detecting user mood",
     "cleaning ship",
     "preparing coffee",
     "balancing -t- indicators",
-    "loading nap pills",
+    "taking nap pills",
     "asking for indications",
     "signing a song",
     "holding breath",
@@ -129,13 +131,14 @@ function introState() {
     }, 
     update: function() {
 
-      temperature += 1;
+      temperature += temperatureSpeed;
 
-      if (temperature > maxTemperature) {
-        temperature = -maxTemperature;
-        // step += 1;
+      if (Math.abs(temperature) > Math.abs(objectiveTemperature)) {
+        step += 1;
+        temperatureSpeed = -1.5;
+        objectiveTemperature = temperatureRange[0];
 
-        if (step => steps.length) {
+        if (step >= steps.length) {
           switchGameState(LEVEL1_STATE);
         }
       }
