@@ -1,10 +1,7 @@
 function introState() {
 
-  var maxTemperature = 200;
-  var temperatureRange = [-70, 70];
-  var temperature = temperatureRange[0];
-  var temperatureSpeed = 0.5;
-  var objectiveTemperature = temperatureRange[1];
+  var tmpSpeed = 0.5;
+
   var messages = [
     "loading propulsors",
     "detecting user mood",
@@ -21,53 +18,52 @@ function introState() {
 
   /* first step texts */
   var hiText = {
-    text: "",
-    font: "70px Sans-serif",
-    text: "Hi",
-    color: "#FDFDFD"
+    f: "70px Sans-serif",
+    t: "Hi",
+    c: "#FDFDFD"
   };
 
   var keeperText = {
-    text: "keeper",
-    font: "85px Sans-serif",
-    color: "#FDFDFD"
+    t: "keeper",
+    f: "85px Sans-serif",
+    c: "#FDFDFD"
   };
 
   var nickText = {
-    text: "",
-    font: "95px Sans-serif",
-    color: "#F0F0F0"
+    t: "",
+    f: "95px Sans-serif",
+    c: "#F0F0F0"
   };
 
   /* second step texts */
   var skillsText = {
-    text: "Skills",
-    font: "80px Sans-serif",
-    color: "#FAFAFA"
+    t: "Skills",
+    f: "80px Sans-serif",
+    c: "#FAFAFA"
   };
 
   var testsText = {
-    text: "Tests",
-    font: "80px Sans-serif",
-    color: "#FAFAFA"
+    t: "Tests",
+    f: "80px Sans-serif",
+    c: "#FAFAFA"
   };
 
   var step1Text = {
-    text: "Step 1:",
-    font: "60px Sans-serif",
-    color: "#FAFAFA"
+    t: "Step 1:",
+    f: "60px Sans-serif",
+    c: "#FAFAFA"
   };
 
   var msg1Text = {
-    text: "Cold the room",
-    font: "40px Sans-serif",
-    color: "#FAFAFA"
+    t: "Cold the room",
+    f: "40px Sans-serif",
+    c: "#FAFAFA"
   };
 
   var objectiveText = {
-    text: "-100°C < t < -10°C",
-    font: "35px Sans-serif",
-    color: "#FAFAFA"
+    t: "-100°C < t < -10°C",
+    f: "35px Sans-serif",
+    c: "#FAFAFA"
   };
 
   var step = 0;
@@ -77,23 +73,44 @@ function introState() {
   ];
 
   function firstStep() {
-    fillText(hiText, center(hiText.width, canvas.width), 100);
-    fillText(keeperText, center(keeperText.width, canvas.width), 210);
-    fillText(nickText, center(nickText.width, canvas.width), 390);
-    drawSquare(center(nickText.width + 90, canvas.width), 300, nickText.width + 90, 110);
+    if (tmp >= 70) {
+      nextStep()  
+    }
+
+    fillText(hiText, center(hiText.w, cnv.width), 100);
+    fillText(keeperText, center(keeperText.w, cnv.width), 210);
+    fillText(nickText, center(nickText.w, cnv.width), 390);
+    drawSquare(center(nickText.w + 90, cnv.width), 300, nickText.w + 90, 110);
   }
 
   function secondStep() {
-    fillText(skillsText, center(skillsText.width, canvas.width) - 30, 100);
-    fillText(testsText, center(testsText.width, canvas.width) + 30, 180);
+    if (tmp <= -70) {
+      nextStep();
+    }
 
-    context.fillRect(0, 230, canvas.width, 5);
+    fillText(skillsText, center(skillsText.w, cnv.width) - 30, 100);
+    fillText(testsText, center(testsText.w, cnv.width) + 30, 180);
 
-    fillText(step1Text, center(step1Text.width, canvas.width), 350);
-    fillText(msg1Text, center(msg1Text.width, canvas.width), 450);
-    fillText(objectiveText, center(objectiveText.width, canvas.width), 510);
-    drawSquare(center(msg1Text.width + 90, canvas.width), 395, msg1Text.width + 90, 140);
+    ctx.fillRect(0, 230, cnv.width, 5);
 
+    fillText(step1Text, center(step1Text.w, cnv.width), 350);
+    fillText(msg1Text, center(msg1Text.w, cnv.width), 450);
+    fillText(objectiveText, center(objectiveText.w, cnv.width), 510);
+    drawSquare(center(msg1Text.w + 90, cnv.width), 395, msg1Text.w + 90, 140);
+
+  }
+
+  function nextStep() {
+    step += 1;
+
+    if (step == 1){
+      tmpSpeed = -1.5;
+      //set time in range
+    }
+
+    if (step >= steps.length) {
+      switchState(LEVEL1_STATE);
+    }
   }
 
   return {
@@ -105,76 +122,55 @@ function introState() {
         var nick = localStorage.getItem("keeper-nick");
 
         if (!nick){ //check if doesnt exist a nick yet
-          hiText.text = "Hi";  //greet for the first very
+          hiText.t = "Hi";  //greet for the first very
           nick = genNick(); //get a random nick
           localStorage.setItem("keeper-nick", nick);  //storage the nick
         }
         else {
-          hiText.text = "Hi again";  //welcome back keeper
+          hiText.t = "Hi again";  //welcome back keeper
         }
         
-        nickText.text = nick; //set the nick text
+        nickText.t = nick; //set the nick t
       }
-
-      setTextWidth(hiText);
-      setTextWidth(keeperText);
-      setTextWidth(nickText);
-
-      setTextWidth(skillsText);
-      setTextWidth(testsText);
-      setTextWidth(step1Text);
-      setTextWidth(msg1Text);
-      setTextWidth(objectiveText);
 
       loadingText = {
-        text: messages[Math.floor(Math.random(messages.length) * messages.length)],
-        font: "40px Sans-serif",
-        color: "#F0F0F0"
+        t: messages[Math.floor(Math.random(messages.length) * messages.length)],
+        f: "40px Sans-serif",
+        c: "#F0F0F0"
       };
-      setTextWidth(loadingText);
 
+      textWidth([
+        hiText,
+        keeperText,
+        nickText,
+        skillsText,
+        testsText,
+        step1Text,
+        msg1Text,
+        objectiveText, 
+        loadingText
+      ]);
+
+      configLvl(-70, 200, [-70, 70],  null, null, null, false, null);
     }, 
+
     update: function() {
 
-      temperature += temperatureSpeed;
-
-      if (Math.abs(temperature) > Math.abs(objectiveTemperature)) {
-        step += 1;
-        temperatureSpeed = -1.5;
-        objectiveTemperature = temperatureRange[0];
-
-        if (step >= steps.length) {
-          switchGameState(LEVEL1_STATE);
-          return;
-        }
-      }
-
-      clearCanvas();
-
+      tmp += tmpSpeed;
       steps[step]();
 
-      drawTemperatureBar(temperature, maxTemperature);
       // get loading message
       if(step == 0){
-        if(Math.abs(temperature%50) == 0){
-          loadingText.text= messages[Math.floor(Math.random(messages.length) * messages.length)];
-          setTextWidth(loadingText);
+        if(Math.abs(tmp%50) == 0){
+          loadingText.t = messages[Math.floor(Math.random(messages.length) * messages.length)];
+          textWidth(loadingText);
         }
       }else{
-        loadingText.text = "prepare to start";
-        setTextWidth(loadingText);
+        loadingText.t = "prepare to start";
+        textWidth(loadingText);
       }
-      fillText(loadingText, center(loadingText.width, canvas.width), canvas.height-5);
-      // drawTemperatureText(temperature);
 
-      // draw temperature objective range
-      drawTemperatureRange(temperatureRange, maxTemperature);
-
-      // update the moveable indicator
-      drawMoveableTemperature(temperature, maxTemperature);
-    },
-    destroy: function() {
-
+      fillText(loadingText, center(loadingText.w, cnv.width), cnv.height-5);
     }
   };
 }

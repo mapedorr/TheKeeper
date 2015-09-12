@@ -60,3 +60,23 @@ function genNick() {
   var t = Date.now();
   return 'K'+t%1000+String.fromCharCode(t%10+65); 
 }
+
+function drawTriangle(mdX, color){
+  ctx.fillStyle = getRGBText(color);
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'square';
+  ctx.beginPath();
+  ctx.moveTo(mdX - 10, cnv.height - 60);
+  ctx.lineTo(mdX, cnv.height - 40);
+  ctx.lineTo(mdX + 10, cnv.height - 60);
+  ctx.lineTo(mdX - 10, cnv.height - 60);
+  ctx.fill();
+  ctx.closePath();
+}
+
+function drawSquare(x, y, w, h){
+  ctx.strokeStyle = "#FDFDFD";
+  ctx.lineCap = 'square';
+  ctx.lineWidth = 6;
+  ctx.strokeRect(x, y, w, h);
+}

@@ -29,8 +29,8 @@ function configLvl(t, mt, r, lt, rt, dl, txt, c) {
   range = r;
   rangeT = rt;
   levelT = lt;
-  tmpTxt = txt;
   dgLap = dl;
+  tmpTxt = txt;
 
   circles = [];
   createCircles(c);
@@ -38,6 +38,10 @@ function configLvl(t, mt, r, lt, rt, dl, txt, c) {
 
 //@TODO improve: if c[x] is object use that params 
 function createCircles(cs) {
+  if (!cs) {
+    return;
+  }
+
   cs.forEach(function(c){
     if (typeof(c) == 'object') {
       circles.push(new Circle(
@@ -62,7 +66,7 @@ function updateLvl(delta) {
     tmp = (tmp < 0) ? maxTmp*-1 : maxTmp;
   }
 
-  if(tmp <= range[1] && tmp >= range[0]){
+  if(levelT && rangeT && tmp <= range[1] && tmp >= range[0]){
     // initiate the timer of objective reached
     inRangeT += delta;
 
@@ -75,8 +79,8 @@ function updateLvl(delta) {
   drawCircles();
   drawTmpBar();
   tmpTxt && drawTmpText();
-  drawTmpIndicator();
   drawRange();
+  drawTmpIndicator();
 
   state.update();
 }
@@ -92,19 +96,6 @@ function drawCircles() {
   }
 }
 
-function drawTriangle(mdX, color){
-  ctx.fillStyle = getRGBText(color);
-  ctx.lineWidth = 2;
-  ctx.lineCap = 'square';
-  ctx.beginPath();
-  ctx.moveTo(mdX - 10, cnv.height - 60);
-  ctx.lineTo(mdX, cnv.height - 40);
-  ctx.lineTo(mdX + 10, cnv.height - 60);
-  ctx.lineTo(mdX - 10, cnv.height - 60);
-  ctx.fill();
-  ctx.closePath();
-}
-
 function drawDashedLine(x, c){
   ctx.strokeStyle = getRGBText(c);
   ctx.lineWidth = 2;
@@ -114,13 +105,6 @@ function drawDashedLine(x, c){
   ctx.lineTo(x, cnv.height);
   ctx.stroke();
   ctx.closePath();
-}
-
-function drawSquare(x, y, w, h){
-  ctx.strokeStyle = "#FDFDFD";
-  ctx.lineCap = 'square';
-  ctx.lineWidth = 6;
-  ctx.strokeRect(x, y, w, h);
 }
 
 function drawRange(){

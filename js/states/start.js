@@ -36,7 +36,6 @@ function startState() {
     },
 
     finish: function() {
-      console.log('fucking life, i do it !');
       switchState(INTRO_STATE);
     }
   };

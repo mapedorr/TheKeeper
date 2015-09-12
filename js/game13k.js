@@ -46,7 +46,7 @@ function init (){
   }, false);
 
   //just for now
-  switchState(START_STATE);
+  switchState(INTRO_STATE);
 
   setInterval(function(){
     updateLvl(33);
