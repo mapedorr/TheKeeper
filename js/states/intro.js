@@ -175,6 +175,9 @@ function introState() {
       }
 
       fillText(loadingText, center(loadingText.w, cnv.width), cnv.height-5);
+    },
+
+    finish: function() {
     }
   };
 }

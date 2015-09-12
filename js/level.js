@@ -79,22 +79,20 @@ function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c) {
   circles = [];
   createCircles(c);
 
-  lvlStatus = true;
+  lvlStatus = 'PLAYING';
 
-  if (levelT) {
-    lvlTimer = setInterval(function() {
+  lvlTimer = setInterval(function() {
 
-      if(intoRange()){
-        // initiate the timer of objective reached
-        rmRangeT -= 1;
-      }
-      
-      if (levelT){
-        levelT -= 1;
-      }
+    if(intoRange()){
+      // initiate the timer of objective reached
+      rmRangeT -= 1;
+    }
+    
+    if (levelT){
+      levelT -= 1;
+    }
 
-    }, 1000);
-  }
+  }, 1000);
 }
 
 //@TODO improve: if c[x] is object use that params 
@@ -141,7 +139,7 @@ function updateLvl() {
       return;
     }
 
-    if(rmRangeT <= 0){
+    if(rmRangeT != null && rmRangeT <= 0){
       endLvl('WON');
       state.finish();
       return;

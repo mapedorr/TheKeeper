@@ -38,6 +38,7 @@ function startState() {
     },
 
     finish: function() {
+      console.log('que paso')
       switchState(INTRO_STATE);
     }
   };
