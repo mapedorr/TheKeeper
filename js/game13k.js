@@ -46,7 +46,7 @@ function init (){
   }, false);
 
   //just for now
-  switchGameState(START_STATE);
+  switchGameState(LEVEL1_STATE);
 
   setInterval(function(){
     stateObj.update();
@@ -158,20 +158,20 @@ function drawTemperatureBar(temperature, maxTemperature){
   context.fillRect(0, canvas.height - 40, canvas.width, canvas.height);
 }
 
-function drawTimeBar(timeInsideRange, timeForLvl){
-  context.fillStyle = getRGBText({r: 46, g: 51, b: 51});
+function drawTimeBar(timeInsideRange, timeForLvl, drawGreen){
+  context.fillStyle = (drawGreen) ? "#4DBF00" : "#464D4D";
   context.fillRect(0, 0, canvas.width/2, canvas.height - (canvas.height - 40));
-  context.fillStyle = getRGBText({r: 70, g: 77, b: 77});
+  context.fillStyle = "#2E3333";
   context.fillRect(canvas.width/2, 0, canvas.width/2, canvas.height - (canvas.height - 40));
   context.font = "40px Sans-serif";
   context.fillStyle = "#F0F0F0";
-  if(timeInsideRange){
-    var text = timeInsideRange/1000 + " sec";
+  if(timeInsideRange >= 0){
+    var text = timeInsideRange + " sec";
     var metrics = context.measureText(text);
     context.fillText(text, canvas.width*0.25 - metrics.width/2, 35);
   }
 
-  if(timeForLvl){
+  if(timeForLvl >= 0){
     var text = timeForLvl + " sec";
     var metrics = context.measureText(text);
     context.fillText(text, canvas.width*0.75 - metrics.width/2, 35);

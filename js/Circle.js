@@ -23,6 +23,7 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
 
   this.color = color;
   this.temperatureSpeed = (33*degreesPerLap)/timeForLap;
+  this.listenClicks = true;
 
   // Method that draws the circle and its ball
   this.draw = function(){
@@ -51,24 +52,26 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
 
   // Method that verifies if the mouse is inside the area of the path
   this.checkClick = function(mouseX, mouseY){
-    // check if the mouse is inside the path
-    var disX2 = Math.pow(centerX - mouseX, 2);
-    var disY2 = Math.pow(centerY - mouseY, 2);
-    var distanceToCenter = Math.sqrt(disX2 + disY2);
+    if(this.listenClicks == true){
+      // check if the mouse is inside the path
+      var disX2 = Math.pow(centerX - mouseX, 2);
+      var disY2 = Math.pow(centerY - mouseY, 2);
+      var distanceToCenter = Math.sqrt(disX2 + disY2);
 
-    if(distanceToCenter >= distanceToEdgeInn
-        && distanceToCenter <= distanceToEdgeOut){
-      clearInterval(fadeInterval);
-      var startColor = this.color;
-      var endColor = null;
-      if(this.ball.speed > 0){
-        endColor = {r: 0, g:0, b: 255};  // blue
-      }else{
-        endColor = {r: 255, g:0, b: 0};  // red
+      if(distanceToCenter >= distanceToEdgeInn
+          && distanceToCenter <= distanceToEdgeOut){
+        clearInterval(fadeInterval);
+        var startColor = this.color;
+        var endColor = null;
+        if(this.ball.speed > 0){
+          endColor = {r: 0, g:0, b: 255};  // blue
+        }else{
+          endColor = {r: 255, g:0, b: 0};  // red
+        }
+        fadeInterval = fade(this.color, startColor, endColor, 2000);
+        this.ball.speed *= -1;
+        this.temperatureSpeed *= -1;
       }
-      fadeInterval = fade(this.color, startColor, endColor, 2000);
-      this.ball.speed *= -1;
-      this.temperatureSpeed *= -1;
     }
   };
 
