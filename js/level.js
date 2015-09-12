@@ -15,7 +15,7 @@ var rmRangeT = 0; //current time into the range
 
 var lvlTimer = null;
 
-var playing = false;
+var lvlStatus = false;
 
 var tempRestText = {
   t: "Temperature restored",
@@ -35,11 +35,18 @@ var timeOverText = {
   c: "#D6990B"
 };
 
+var tryAgainText = {
+  t: "Touch to try again",
+  f: "45px Sans-serif",
+  c: "#FFF"
+};
+
 function initLvl() {
   textWidth([
     tempRestText,
     svdLifesText,
-    timeOverText
+    timeOverText,
+    tryAgainText
   ]);
 }
 
@@ -72,7 +79,7 @@ function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c) {
   circles = [];
   createCircles(c);
 
-  playing = true;
+  lvlStatus = true;
 
   if (levelT) {
     lvlTimer = setInterval(function() {
@@ -115,23 +122,43 @@ function createCircles(cs) {
 
 function updateLvl() {
 
-  if (!playing) return;
+  if (lvlStatus == 'LOST') {
 
-  if (levelT != null && levelT <= 0) {
-    lostLvl();
-    return;
+    if (getClick()) {
+      state.create();
+    }
   }
+  else if (lvlStatus == 'WON') {
 
-  if(rmRangeT <= 0){
-    winLvl();
-    state.finish();
-    return;
+    if (getClick()) {
+      alert('aqui no hay nada mas que ver');
+    }
   }
+  else {
 
-  tmp += deltaTmp();
+    if (levelT != null && levelT <= 0) {
+      endLvl('LOST');
+      return;
+    }
 
-  if(Math.abs(tmp) > maxTmp){
-    tmp = (tmp < 0) ? maxTmp*-1 : maxTmp;
+    if(rmRangeT <= 0){
+      endLvl('WON');
+      state.finish();
+      return;
+    }
+
+    var click = getClick();
+    if (click){
+      for(var i=0; i<circles.length; i++){
+        circles[i].checkClick(click.x, click.y);
+      }
+    }
+
+    tmp += deltaTmp();
+
+    if(Math.abs(tmp) > maxTmp){
+      tmp = (tmp < 0) ? maxTmp*-1 : maxTmp;
+    }
   }
 
   clearCanvas();
@@ -141,6 +168,13 @@ function updateLvl() {
   eTmpText && drawTmpText();
   drawRange();
   drawTmpIndicator();
+
+  if (lvlStatus == 'WON') {
+    winLvl();
+  }
+  else if (lvlStatus == 'LOST'){
+    lostLvl();
+  }
 
   state.update();
 }
@@ -165,33 +199,26 @@ function drawCircles() {
 }
 
 function winLvl() {
-  console.log('ganaste');
-
   if (eWinLvl) {
     stopCircles();
 
     fillText(tempRestText, center(tempRestText.w, cnv.width), cnv.height/2);
     fillText(svdLifesText, center(svdLifesText.w, cnv.width), cnv.height/2 + 70);
-
-    endLvl();
   }
 }
 
 function lostLvl() {
 
-  console.log('perdiste')
-
   if (eLostLvl) {
-    stopCircles();
 
     fillText(timeOverText, center(timeOverText.w, cnv.width), cnv.height/2);
-
-    endLvl()  
+    fillText(tryAgainText, center(tryAgainText.w, cnv.width), cnv.height/2 + 50);
   }
 }
 
-function endLvl() {
-  playing = false;
+function endLvl(status) {
+  lvlStatus = status;
+  stopCircles();
   clearInterval(lvlTimer);
 }
 

@@ -52,7 +52,8 @@ function init (){
   switchState(LEVEL1_STATE);
 
   setInterval(function(){
-    updateLvl(33);
+    updateLvl();
+    mouseX = mouseY = null; //clean the last click
   }, 33);
 }
 
@@ -60,11 +61,14 @@ function onMouseClick(e){
   // update the mouse position
   mouseX = e.clientX - cnv.offsetLeft;
   mouseY = e.clientY - cnv.offsetTop;
+}
 
-  // verify if the click occurs inside the path of any of the circles in the level
-  for(var i=0; i<circles.length; i++){
-    circles[i].checkClick(mouseX, mouseY);
+function getClick() {
+  if (mouseX && mouseY) {
+    return { x: mouseX, y: mouseY} ;
   }
+
+  return null;
 }
 
 function clearCanvas() {

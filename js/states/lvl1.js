@@ -1,16 +1,6 @@
 /* Test state */
 
 function testState() {
-  // Set the initial temperature
-  var temperature = 70;
-  var maxTemperature = 100;
-  var temperatureRange = [-100, -10];
-  var inRangeTimer = null;
-  var reqTimeInsideRange = null;// in ms
-  var secInsideRange = 0;
-  var timeForLvl = 0;// in s
-  var lvlTimer = null;
-  var objectiveReached = false; 
 
   return {
 
@@ -22,7 +12,7 @@ function testState() {
       )
     },
 
-    update: function(){
+    update: function() {
 
     },
 
