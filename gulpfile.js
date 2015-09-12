@@ -6,7 +6,7 @@ var files = [
   './js/states/start.js',
   './js/states/intro.js',
   './js/states/lvl1.js',
-
+  './js/states/level.js',
   './js/utils.js',
   './js/Circle.js',
   './js/game13k.js'

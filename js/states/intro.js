@@ -151,7 +151,11 @@ function introState() {
         loadingText
       ]);
 
-      configLvl(-70, 200, [-70, 70],  null, null, null, false, null);
+      configLvl(-70, 200, [-70, 70],  //temp, maxT, range
+        null, null, null, //level time, range time, degress lap
+        false, false, false, false, //win, lose, time bar, degress txt flasg
+        null  //circles
+      );
     }, 
 
     update: function() {

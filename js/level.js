@@ -4,11 +4,44 @@ var range = [0, 0]; //range
 var rangeT = 0; //range time
 var levelT = 0; //level time
 var circles = [];  //circles
-var tmpTxt = true;  //draw the degrees text
+var eTmpText = false;  //draw the degrees text
+var eWinLvl = false;
+var eLostLvl = false;
+var eTimeBar = false;
 var state = null;
 var dgLap = 0;
 
-var inRangeT = 0; //current time into the range
+var rmRangeT = 0; //current time into the range
+
+var lvlTimer = null;
+
+var playing = false;
+
+var tempRestText = {
+  t: "Temperature restored",
+  f: "60px Sans-serif",
+  c: "#FDFDFD"
+};
+
+var svdLifesText = {
+  t: "saved species",
+  f: "40px Sans-serif",
+  c: "#F0F0F0"
+};
+
+var timeOverText = {
+  t: "Time is over",
+  f: "60px Sans-serif",
+  c: "#D6990B"
+};
+
+function initLvl() {
+  textWidth([
+    tempRestText,
+    svdLifesText,
+    timeOverText
+  ]);
+}
 
 /**
  * [configLvl description]
@@ -22,18 +55,39 @@ var inRangeT = 0; //current time into the range
  * @param  {[type]} cb [finish callback]
  * @return {[type]}    [description]
  */
-function configLvl(t, mt, r, lt, rt, dl, txt, c) {
+function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c) {
 
   tmp = t;
   maxTmp = mt;
   range = r;
-  rangeT = rt;
+  rangeT = rmRangeT = rt;
   levelT = lt;
   dgLap = dl;
-  tmpTxt = txt;
+
+  eTmpText = txt;
+  eWinLvl = win;
+  eLostLvl = lst;
+  eTimeBar = tBar;
 
   circles = [];
   createCircles(c);
+
+  playing = true;
+
+  if (levelT) {
+    lvlTimer = setInterval(function() {
+
+      if(intoRange()){
+        // initiate the timer of objective reached
+        rmRangeT -= 1;
+      }
+      
+      if (levelT){
+        levelT -= 1;
+      }
+
+    }, 1000);
+  }
 }
 
 //@TODO improve: if c[x] is object use that params 
@@ -59,30 +113,44 @@ function createCircles(cs) {
   });
 }
 
-function updateLvl(delta) {
+function updateLvl() {
+
+  if (!playing) return;
+
+  if (levelT != null && levelT <= 0) {
+    lostLvl();
+    return;
+  }
+
+  if(rmRangeT <= 0){
+    winLvl();
+    state.finish();
+    return;
+  }
+
   tmp += deltaTmp();
 
   if(Math.abs(tmp) > maxTmp){
     tmp = (tmp < 0) ? maxTmp*-1 : maxTmp;
   }
 
-  if(levelT && rangeT && tmp <= range[1] && tmp >= range[0]){
-    // initiate the timer of objective reached
-    inRangeT += delta;
-
-    if(inRangeT >= rangeT){
-      state.finish();
-    }
-  }
-
   clearCanvas();
   drawCircles();
   drawTmpBar();
-  tmpTxt && drawTmpText();
+  eTimeBar && drawTimeBar();
+  eTmpText && drawTmpText();
   drawRange();
   drawTmpIndicator();
 
   state.update();
+}
+
+function stopCircles() {
+  for(var i=0; i<circles.length; i++){
+    // console.log("circles[i]", circles[i]);
+    circles[i].ball.speed = 0;
+    circles[i].listenClicks = false;
+  }
 }
 
 function switchState(index) {
@@ -94,6 +162,41 @@ function drawCircles() {
   for(var i=0; i<circles.length; i++){
     circles[i].draw();
   }
+}
+
+function winLvl() {
+  console.log('ganaste');
+
+  if (eWinLvl) {
+    stopCircles();
+
+    fillText(tempRestText, center(tempRestText.w, cnv.width), cnv.height/2);
+    fillText(svdLifesText, center(svdLifesText.w, cnv.width), cnv.height/2 + 70);
+
+    endLvl();
+  }
+}
+
+function lostLvl() {
+
+  console.log('perdiste')
+
+  if (eLostLvl) {
+    stopCircles();
+
+    fillText(timeOverText, center(timeOverText.w, cnv.width), cnv.height/2);
+
+    endLvl()  
+  }
+}
+
+function endLvl() {
+  playing = false;
+  clearInterval(lvlTimer);
+}
+
+function intoRange() {
+  return rangeT && tmp <= range[1] && tmp >= range[0]
 }
 
 function drawDashedLine(x, c){
@@ -148,15 +251,15 @@ function drawTmpBar(){
   ctx.fillRect(0, cnv.height - 40, cnv.width, cnv.height);
 }
 
-function drawTimeBar(rangeT, levelT){
-  ctx.fillStyle = (inRangeT>0) ? "#4DBF00" : "#464D4D";
+function drawTimeBar(){
+  ctx.fillStyle = intoRange() ? "#4DBF00" : "#464D4D";
   ctx.fillRect(0, 0, cnv.width/2, cnv.height - (cnv.height - 40));
   ctx.fillStyle = "#2E3333";
   ctx.fillRect(cnv.width/2, 0, cnv.width/2, cnv.height - (cnv.height - 40));
   ctx.font = "40px Sans-serif";
   ctx.fillStyle = "#F0F0F0";
-  if(rangeT >= 0){
-    var text = rangeT + " sec";
+  if(rmRangeT >= 0){
+    var text = rmRangeT + " sec";
     var m = ctx.measureText(text);
     ctx.fillText(text, cnv.width*0.25 - m.width/2, 35);
   }

@@ -22,7 +22,9 @@ function startState() {
     create: function() {
       textWidth([title1, title2, startTxt]);
 
-      configLvl(0, 200, [-200, -150], -1, 1, 200, false, 
+      configLvl(0, 200, [-200, -150], 
+        null, 1, 200, 
+        false, false, false, false,
         [{ x: cnv.width/2, y: cnv.height/2 + 50, r: 150, tmp: 1 }]
       )
     },

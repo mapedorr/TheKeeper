@@ -45,8 +45,11 @@ function init (){
     onMouseClick(e);
   }, false);
 
+
+  initLvl();
+
   //just for now
-  switchState(INTRO_STATE);
+  switchState(LEVEL1_STATE);
 
   setInterval(function(){
     updateLvl(33);
