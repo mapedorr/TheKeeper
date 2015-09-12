@@ -1,5 +1,5 @@
 // Object that draws a circle an its ball
-var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth, timeForLap, degreesPerLap){
+var Circle = function(ctx, radius, centerX, centerY, angle, color, pathWidth, timeForLap, degreesPerLap){
   // calculate the length of the circle
   var pathLength = 2*Math.PI*radius;
 
@@ -31,23 +31,23 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
     // this.drawDebug();
 
     // draw path
-    context.beginPath();
-    context.strokeStyle = getRGBText(color);
-    context.lineWidth = pathWidth;
-    context.arc(centerX, centerY, radius, 0, Math.PI*2, true);
-    context.stroke();
-    context.closePath();
+    ctx.beginPath();
+    ctx.strokeStyle = getRGBText(color);
+    ctx.lineWidth = pathWidth;
+    ctx.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+    ctx.stroke();
+    ctx.closePath();
 
     this.ball.x = centerX + Math.cos(angle) * radius;
     this.ball.y = centerY + Math.sin(angle) * radius;
     angle += this.ball.speed;
 
     // draw moving ball
-    context.fillStyle = getRGBText(color);
-    context.beginPath();
-    context.arc(this.ball.x, this.ball.y, 15, 0, Math.PI*2, true);
-    context.closePath();
-    context.fill();
+    ctx.fillStyle = getRGBText(color);
+    ctx.beginPath();
+    ctx.arc(this.ball.x, this.ball.y, 15, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
   };
 
   // Method that verifies if the mouse is inside the area of the path
@@ -78,21 +78,21 @@ var Circle = function(context, radius, centerX, centerY, angle, color, pathWidth
   // Method that draws things for debugging
   this.drawDebug = function(){
     // draw the center of the circle
-    context.fillStyle = "blue";
-    context.beginPath();
-    context.arc(centerX, centerY, 1, 0, Math.PI*2, true);
-    context.closePath();
-    context.fill();
+    ctx.fillStyle = "blue";
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 1, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
 
     // draw a point in the outer edge and a point in the inner edge
-    context.fillStyle = "blue";
-    context.beginPath();
-    context.arc(centerX + radius + (pathWidth - pathWidth / 2),
+    ctx.fillStyle = "blue";
+    ctx.beginPath();
+    ctx.arc(centerX + radius + (pathWidth - pathWidth / 2),
       centerY, 1, 0, Math.PI*2, true);// inner edge
-    context.arc(centerX + radius - (pathWidth - pathWidth / 2),
+    ctx.arc(centerX + radius - (pathWidth - pathWidth / 2),
       centerY, 1, 0, Math.PI*2, true);// outer edge
-    context.closePath();
-    context.fill();
+    ctx.closePath();
+    ctx.fill();
   };
 
 };

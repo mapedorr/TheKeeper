@@ -1,88 +1,43 @@
 function startState() {
 
-  var titleText_1 = {
-    text: "The",
-    font: "65px Sans-serif",
-    color: "#FFF"
+  var title1 = {
+    t: "The",
+    f: "65px Sans-serif",
+    c: "#FFF"
   }
 
-  var titleText_2 = {
-    text: "Keeper",
-    font: "70px Sans-serif",
-    color: "#FFF"
+  var title2 = {
+    t: "Keeper",
+    f: "70px Sans-serif",
+    c: "#FFF"
   }
 
-  var startText = {
-    text: "Click the circle to start",
-    font: "30px Sans-serif",
-    color: "#F0F0F0"
-  }
-
-  var temperature = 0;
-  var maxTemperature = 200;
-  var temperatureRange = [-180];
-
-  function _create() {
-
-    circles.push(new Circle(
-      context,                   // canvas context
-      100,                             // radius
-      canvas.width/2,            // center x
-      canvas.height/2,           // center y
-      0,                              // start ball movement angle
-      {r: 255, g: 0, b: 0},           // path and ball color
-      8,                              // path width
-      2000,                           // time for lap (in ms)
-      300                              // degrees per lap
-    ));
-
-    setTextWidth(titleText_1);
-    setTextWidth(titleText_2);
-    setTextWidth(startText);
-  }
-
-  function _update() {
-    temperature += calculateDeltaTemperature();
-
-    if (Math.abs(temperature) > maxTemperature) {
-      temperature = (temperature > 0) ? maxTemperature : -maxTemperature 
-    }
-
-    if (temperature == -maxTemperature) {
-      switchGameState(INTRO_STATE);
-    }
+  var startTxt = {
+    t: "Click the circle to start",
+    f: "30px Sans-serif",
+    c: "#F0F0F0"
   }
 
   return {
-    create: _create,
+    create: function() {
+      textWidth([title1, title2, startTxt]);
 
-    update: function() {
-      _update()
-
-      clearCanvas();      
-      drawCircles();
-
-      fillText(titleText_1, canvas.width/2 - titleText_1.width/2, 90);
-      fillText(titleText_2, canvas.width/2 - titleText_2.width/2, 170);
-
-      temperature += calculateDeltaTemperature();
-      if(Math.abs(temperature) > maxTemperature){
-        temperature = (temperature < 0) ? maxTemperature*-1 : maxTemperature;
-      }
-
-      // update the moveable indicator
-      drawMoveableTemperature(temperature, maxTemperature);
-
-      // update the bar text and color
-      drawTemperatureBar(temperature, maxTemperature);
-      fillText(startText, canvas.width/2 - startText.width/2, canvas.height - 10);
-
-      // draw temperature objective range
-      drawTemperatureRange(temperatureRange, maxTemperature);
+      configLvl(0, 200, [-200, -150], -1, 1, 200, false, 
+        [{ x: cnv.width/2, y: cnv.height/2 + 50, r: 150, tmp: 1 }]
+      )
     },
 
-    destroy: function() {
-      circles = [];
+    update: function() {
+
+      fillText(title1, cnv.width/2 - title1.w/2, 90);
+      fillText(title2, cnv.width/2 - title2.w/2, 170);
+
+      fillText(startTxt, cnv.width/2 - startTxt.w/2, cnv.height - 10);
+    },
+
+    finish: function() {
+      console.log('fucking life, i do it !');
+      switchState(INTRO_STATE);
     }
   };
 }

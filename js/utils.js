@@ -26,7 +26,7 @@ function fade(color, startColor, endColor, duration) {
   return theInterval;
 }
 
-function calculateDeltaTemperature(){
+function deltaTmp(){
   var dt = 0;
   //add the temperature for each circle
   for(var i=0; i<circles.length; i++){
@@ -35,15 +35,21 @@ function calculateDeltaTemperature(){
   return dt;
 }
 
-function setTextWidth(objText) {
-  context.font = objText.font;
-  objText.width = context.measureText(objText.text).width;
+function textWidth(objs) {
+  if (!objs.length) {
+    objs = [objs];
+  }
+
+  objs.forEach(function(obj){
+    ctx.font = obj.f;
+    obj.w = ctx.measureText(obj.t).width;
+  });
 }
 
-function fillText(objText, x, y) {
-  context.fillStyle = objText.color;
-  context.font = objText.font;
-  context.fillText(objText.text, x, y)
+function fillText(obj, x, y) {
+  ctx.fillStyle = obj.c;
+  ctx.font = obj.f;
+  ctx.fillText(obj.t, x, y)
 }
 
 function center(c, p) {

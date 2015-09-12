@@ -11,8 +11,8 @@ var START_STATE = 0;
 var LEVEL1_STATE = 1;
 var INTRO_STATE = 2;
 
-var canvas = null;
-var context = null;
+var cnv = null;
+var ctx = null;
 var circles = [];
 var mouseX = null;
 var mouseY = null;
@@ -32,42 +32,31 @@ var gameStates = [
 ];
 
 function init (){
-  canvas = document.getElementById('canvas13K');
-  if(!canvas || !canvas.getContext){
+  cnv = document.getElementById('canvas13K');
+  if(!cnv || !cnv.getContext){
     return;
   }
 
-  // create the context for drawing elements on the canvas
-  context = canvas.getContext('2d');
+  // create the ctx for drawing elements on the cnv
+  ctx = cnv.getContext('2d');
 
   // add mouse listeners
-  canvas.addEventListener("click", function(e){
+  cnv.addEventListener("click", function(e){
     onMouseClick(e);
   }, false);
 
   //just for now
-  switchGameState(START_STATE);
+  switchState(START_STATE);
 
   setInterval(function(){
-    stateObj.update();
+    updateLvl(33);
   }, 33);
 }
 
-function switchGameState(state) {
-
-  if (stateObj) {
-    stateObj.destroy();
-  }
-
-  //set the a new current state function
-  stateObj = gameStates[state]();
-  stateObj.create();
-};
-
 function onMouseClick(e){
   // update the mouse position
-  mouseX = e.clientX - canvas.offsetLeft;
-  mouseY = e.clientY - canvas.offsetTop;
+  mouseX = e.clientX - cnv.offsetLeft;
+  mouseY = e.clientY - cnv.offsetTop;
 
   // verify if the click occurs inside the path of any of the circles in the level
   for(var i=0; i<circles.length; i++){
@@ -76,112 +65,6 @@ function onMouseClick(e){
 }
 
 function clearCanvas() {
-  context.fillStyle = '#191919';
-  context.fillRect(0, 0, canvas.width, canvas.height);
-}
-
-function drawCircles() {
-  for(var i=0; i<circles.length; i++){
-    circles[i].draw();
-  }
-}
-
-function drawTriangle(middlePosX, color){
-  context.fillStyle = getRGBText(color);
-  context.lineWidth = 2;
-  context.lineCap = 'square';
-  context.beginPath();
-  context.moveTo(middlePosX - 10, canvas.height - 60);
-  context.lineTo(middlePosX, canvas.height - 40);
-  context.lineTo(middlePosX + 10, canvas.height - 60);
-  context.lineTo(middlePosX - 10, canvas.height - 60);
-  context.fill();
-  context.closePath();
-}
-
-function drawDashedLine(xPos, color){
-  context.strokeStyle = getRGBText(color);
-  context.lineWidth = 2;
-  context.setLineDash([6]);
-  context.beginPath();
-  context.moveTo(xPos, canvas.height - 40);
-  context.lineTo(xPos, canvas.height);
-  context.stroke();
-  context.closePath();
-}
-
-function drawSquare(xPos, yPos, width, height){
-  context.strokeStyle = "#FDFDFD";
-  context.lineCap = 'square';
-  context.lineWidth = 6;
-  context.strokeRect(xPos, yPos, width, height);
-}
-
-function drawTemperatureRange(limits, maxTemperature){
-  for (var i = limits.length - 1; i >= 0; i--) {
-    var triangleXPos = (Math.abs(limits[i]) * (canvas.width/2))/maxTemperature;
-    var triangleColor = {
-      r: Math.floor((255*limits[i])/maxTemperature),
-      g: 0,
-      b: Math.floor((255*limits[i])/(maxTemperature*-1))
-    };
-    if(limits[i] <= 0){
-      triangleXPos = (canvas.width/2) - triangleXPos;
-    }else{
-      triangleXPos = (canvas.width/2) + triangleXPos;
-    }
-
-    drawTriangle(triangleXPos, {r:230,g:230,b:230});
-    drawDashedLine(triangleXPos, {r:21,g:21,b:21});
-  };
-}
-
-function drawMoveableTemperature(temperature, maxTemperature){
-  var triangleXPos = (Math.abs(temperature.toFixed(2)) * (canvas.width/2))/maxTemperature;
-  if(temperature <= 0){
-    triangleXPos = (canvas.width/2) - triangleXPos;
-  }else{
-    triangleXPos = (canvas.width/2) + triangleXPos;
-  }
-  drawTriangle(triangleXPos, barColor);
-}
-
-function drawTemperatureBar(temperature, maxTemperature){
-  // update the bar color
-  barColor = {
-    r: Math.floor(123 + (temperature*(123/maxTemperature))),
-    g: 0,
-    b: Math.floor(123 - (temperature*(123/maxTemperature))) 
-  };
-
-  context.fillStyle = getRGBText(barColor);
-  context.fillRect(0, canvas.height - 40, canvas.width, canvas.height);
-}
-
-function drawTimeBar(timeInsideRange, timeForLvl, drawGreen){
-  context.fillStyle = (drawGreen) ? "#4DBF00" : "#464D4D";
-  context.fillRect(0, 0, canvas.width/2, canvas.height - (canvas.height - 40));
-  context.fillStyle = "#2E3333";
-  context.fillRect(canvas.width/2, 0, canvas.width/2, canvas.height - (canvas.height - 40));
-  context.font = "40px Sans-serif";
-  context.fillStyle = "#F0F0F0";
-  if(timeInsideRange >= 0){
-    var text = timeInsideRange + " sec";
-    var metrics = context.measureText(text);
-    context.fillText(text, canvas.width*0.25 - metrics.width/2, 35);
-  }
-
-  if(timeForLvl >= 0){
-    var text = timeForLvl + " sec";
-    var metrics = context.measureText(text);
-    context.fillText(text, canvas.width*0.75 - metrics.width/2, 35);
-  }
-}
-
-function drawTemperatureText(temperature) {
-  context.font = "40px Sans-serif";
-  context.fillStyle = "#F0F0F0";
-  var text = temperature.toFixed(2) + "°C";
-  var metrics = context.measureText(text);
-  context.fillText(text, canvas.width/2 - metrics.width/2, canvas.height-5);
+  ctx.fillStyle = '#191919';
+  ctx.fillRect(0, 0, cnv.width, cnv.height);
 }
