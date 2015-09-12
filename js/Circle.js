@@ -48,6 +48,23 @@ var Circle = function(ctx, radius, centerX, centerY, angle, color, pathWidth, ti
     ctx.arc(this.ball.x, this.ball.y, 15, 0, Math.PI*2, true);
     ctx.closePath();
     ctx.fill();
+
+    if(!this.listenClicks){
+      // draw lock
+      ctx.strokeStyle = "#313131";
+      ctx.setLineDash([1]);
+      ctx.lineWidth = pathWidth+1;
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, (Math.PI/180)*315, true);
+      ctx.stroke();
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, (Math.PI/180)*180, (Math.PI/180)*135, true);
+      ctx.stroke();
+      ctx.closePath();
+    }
   };
 
   // Method that verifies if the mouse is inside the area of the path
@@ -71,6 +88,7 @@ var Circle = function(ctx, radius, centerX, centerY, angle, color, pathWidth, ti
         fadeInterval = fade(this.color, startColor, endColor, 2000);
         this.ball.speed *= -1;
         this.temperatureSpeed *= -1;
+        this.listenClicks = false;
       }
     }
   };
