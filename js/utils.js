@@ -56,6 +56,10 @@ function center(c, p) {
   return p/2 - c/2;
 }
 
+function distanceBetween(x1, y1, x2, y2) {
+  return Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));
+}
+
 function genNick() {
   var t = Date.now();
   return 'K'+t%1000+String.fromCharCode(t%10+65); 

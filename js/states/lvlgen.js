@@ -1,4 +1,17 @@
 function lvlgenState(){
+
+  function tooClose(circle, others) {
+    if (others.length == 0) return false;
+    
+    var totalD = 0;
+
+    others.forEach(function(other) {
+      totalD += distanceBetween(circle.x, circle.y, other.x, other.y);
+    });
+
+    return totalD/(others.length*10) < circle.r/3;
+  }
+
   return {
     lifes: 0,
     repeat: false,
@@ -13,9 +26,19 @@ function lvlgenState(){
 
       var circles = [];
       for (var i = cn; i > 0; i--) {
-        var _r = getRandomInt(50, 200);// radius
+        var _r = getRandomInt(50, 250 / Math.log(cn+1));// radius
         var p = calculateCirclePos(_r);// (x,y) center point
-        circles.push({x: p.x, y: p.y, r: _r, tmp: getRandomInt(0,1)});
+
+        var circle = { x: p.x, y: p.y, r: _r };
+
+        if (tooClose(circle, circles)) {
+          i++;  //discard this circle
+        }
+        else {
+          circle.tmp = getRandomInt(0,1);
+          circles.push(circle);
+        }
+
       };
 
       var it = calculateInitTemp(tr, mt);// Initial temperature

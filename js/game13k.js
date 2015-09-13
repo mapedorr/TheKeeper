@@ -59,7 +59,7 @@ function init (){
   }, false);
 
   initLvl();
-  switchState(START_STATE);
+  switchState(LVLGEN_STATE);
 
   setInterval(function(){
     updateLvl();
