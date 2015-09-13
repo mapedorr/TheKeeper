@@ -74,8 +74,8 @@ function drawTriangle(mdX, color){
   ctx.closePath();
 }
 
-function drawSquare(x, y, w, h){
-  ctx.strokeStyle = "#FDFDFD";
+function drawSquare(x, y, w, h, c){
+  ctx.strokeStyle = c;
   ctx.lineCap = 'square';
   ctx.lineWidth = 6;
   ctx.strokeRect(x, y, w, h);

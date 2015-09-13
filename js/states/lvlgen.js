@@ -24,7 +24,10 @@ function lvlgenState(){
 
       this.lifes = getRandomInt(2,284);
 
-      configLvl(it, mt, tr, lvlt, irt, dpl, true, true, true, true, circles);
+      configLvl(it, mt, tr, 
+        lvlt, irt, dpl, true,
+        true, true, true, true, 
+        circles);
     },
 
     update: function(){

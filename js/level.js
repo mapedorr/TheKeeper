@@ -19,6 +19,7 @@ var ftir = null;// First time inside range
 var lockAll = null;// Lock all circles on level?
 
 var lvlStatus = false;
+var isWorldLvl = false;
 
 var tempRest1Text = {
   t: "Temperature",
@@ -38,7 +39,7 @@ var touchConTxt = {
   c: "#D6990B"
 }
 
-var svdLifesText = {
+var svdWorldsTxt = {
   t: "",
   dt: "saved species",
   f: "35px Sans-serif",
@@ -91,13 +92,15 @@ function initLvl() {
  * @param  {Array} c      The Circles of the level.
  * @param  {function} cb  The function to call when the level finishes.
  */
-function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c, cb) {
+function configLvl(t, mt, r, lt, rt, dl, isW, win, lst, tBar, txt, c, cb) {
   tmp = t;
   maxTmp = mt;
   range = r;
   rangeT = rmRangeT = rt;
   levelT = lt;
   dgLap = dl;
+
+  isWorldLvl = isW;
 
   eWinLvl = win;
   eLostLvl = lst;
@@ -108,11 +111,6 @@ function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c, cb) {
   createCircles(c);
 
   lvlStatus = 'PLAYING';
-
-  if(state.lifes){
-    svdLifesText.t = state.lifes + " " + svdLifesText.dt;
-    textWidth([svdLifesText]);
-  }
 
   if(lvlTimer){
     clearInterval(lvlTimer);
@@ -268,10 +266,12 @@ function winLvl() {
 
     fillText(tempRest1Text, center(tempRest1Text.w, cnv.width), cnv.height/2);
     fillText(tempRest2Text, center(tempRest2Text.w, cnv.width), cnv.height/2 + 60);
-    fillText(touchConTxt, center(touchConTxt.w, cnv.width), cnv.height/2 + 100);
-    if(state.lifes){
-      fillText(svdLifesText, center(svdLifesText.w, cnv.width), cnv.height/2 + 110);
-    }
+
+    svdWorldsTxt.t = state.lifes + " " + svdWorldsTxt.dt;
+    textWidth(svdWorldsTxt);
+    fillText(svdWorldsTxt, center(svdWorldsTxt.w, cnv.width), cnv.height/2 + 110);
+    
+    fillText(touchConTxt, center(touchConTxt.w, cnv.width), cnv.height/2 + 140);
   }
 }
 
@@ -293,6 +293,17 @@ function endLvl(status) {
   clearInterval(inRangeTimer);
   inRangeTimer = null;
   lvlTimer = null;
+
+  if (isWorldLvl) {
+
+    if (status == 'WON') {
+      savedWorlds += 1;
+    }
+    else if (status == 'LOST') {
+      lostWorlds += 1;
+    }
+    savedWorldsInfo();
+  }
 }
 
 function intoRange() {

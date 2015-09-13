@@ -80,7 +80,7 @@ function introState() {
     fillText(hiText, center(hiText.w, cnv.width), 100);
     fillText(keeperText, center(keeperText.w, cnv.width), 210);
     fillText(nickText, center(nickText.w, cnv.width), 390);
-    drawSquare(center(nickText.w + 90, cnv.width), 300, nickText.w + 90, 110);
+    drawSquare(center(nickText.w + 90, cnv.width), 300, nickText.w + 90, 110, "#FDFDFD");
   }
 
   function secondStep() {
@@ -96,7 +96,7 @@ function introState() {
     fillText(step1Text, center(step1Text.w, cnv.width), 350);
     fillText(msg1Text, center(msg1Text.w, cnv.width), 450);
     fillText(objectiveText, center(objectiveText.w, cnv.width), 510);
-    drawSquare(center(msg1Text.w + 90, cnv.width), 395, msg1Text.w + 90, 140);
+    drawSquare(center(msg1Text.w + 90, cnv.width), 395, msg1Text.w + 90, 140, "#FDFDFD");
 
   }
 
@@ -152,7 +152,7 @@ function introState() {
       ]);
 
       configLvl(-70, 200, [-70, 70],  //temp, maxT, range
-        null, null, null, //level time, range time, degress lap
+        null, null, null, false,//level time, range time, degress lap, is world
         false, false, false, false, //win, lose, time bar, degress txt flasg
         null  //circles
       );
