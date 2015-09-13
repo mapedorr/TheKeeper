@@ -22,7 +22,7 @@ function lvl3State() {
     },
 
     wonClick: function() {
-      switchState(LVLGEN_STATE);
+      switchState(READY_STATE);
     },
 
     lostClick: function(){

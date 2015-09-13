@@ -54,7 +54,7 @@ function introState() {
           firstTime = false;
         }
         
-        currentTutorial = parseInt(localStorage.getItem("keeper-tutorial"));
+        currentTutorial = parseInt(localStorage.getItem("keeper-tutorial")) || 1;
         nickText.t = nick; //set the nick t
       }
 
@@ -103,6 +103,7 @@ function introState() {
 
     finish: function() {
       if (currentTutorial <= 3) {
+        console.log('here')
         switchState(SKILL1_STATE+currentTutorial-1);
       }
       else {

@@ -20,19 +20,16 @@ var LEVEL1_STATE = 6;
 var LEVEL2_STATE = 7;
 var LEVEL3_STATE = 8;
 
+var READY_STATE = 9;
+
 var cnv = null;
 var ctx = null;
-var circles = [];
 var mouseX = null;
 var mouseY = null;
-var currentGameState = 0;
-var currentGameStateFunction = null;
 
 var barColor = {
   r: 255, g: 255, b:255
 };
-
-var stateObj = null;
 
 var gameStates = [
   startState,
@@ -43,7 +40,8 @@ var gameStates = [
   skillState.bind(null, 3, "Touch them together", LEVEL3_STATE),
   lvl1State,
   lvl2State,
-  lvl3State
+  lvl3State,
+  readyState
 ];
 
 function init (){
@@ -61,7 +59,7 @@ function init (){
   }, false);
 
   initLvl();
-  switchState(SKILL3_STATE);
+  switchState(START_STATE);
 
   setInterval(function(){
     updateLvl();
