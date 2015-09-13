@@ -1,6 +1,6 @@
 function introState() {
 
-  var firstTime = true;
+  var currentTutorial = 0;
   var tmpSpeed = 0.5;
 
   var messages = [
@@ -54,6 +54,7 @@ function introState() {
           firstTime = false;
         }
         
+        currentTutorial = parseInt(localStorage.getItem("keeper-tutorial"));
         nickText.t = nick; //set the nick t
       }
 
@@ -66,7 +67,8 @@ function introState() {
       textWidth([
         hiText,
         keeperText,
-        nickText
+        nickText,
+        loadingText
       ]);
 
       configLvl(-70, 200, [-70, 70],  //temp, maxT, range
@@ -100,8 +102,8 @@ function introState() {
     },
 
     finish: function() {
-      if (firstTime) {
-        switchState(SKILL1_STATE);
+      if (currentTutorial <= 3) {
+        switchState(SKILL1_STATE+currentTutorial-1);
       }
       else {
         switchState(LVLGEN_STATE);

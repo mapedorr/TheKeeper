@@ -35,6 +35,11 @@ function skillState(step, msgTxt, nextLvl) {
   return {
     create: function() {
 
+      if (typeof(Storage) !== 'undefined') {
+        //save the current tutorial step
+        localStorage.setItem('keeper-tutorial', step);
+      }
+
       textWidth([
         skillsText,
         testsText,
