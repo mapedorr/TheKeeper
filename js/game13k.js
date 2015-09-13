@@ -49,7 +49,7 @@ function init (){
   }, false);
 
   initLvl();
-  switchState(LEVEL1_STATE);
+  switchState(START_STATE);
 
   setInterval(function(){
     updateLvl();
