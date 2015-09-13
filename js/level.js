@@ -51,19 +51,18 @@ function initLvl() {
 }
 
 /**
- * [configLvl description]
- * @param  {[type]} t  [temperature]
- * @param  {[type]} mt [max temperature]
- * @param  {[type]} r  [range]
- * @param  {[type]} lt [level time]
- * @param  {[type]} rt [range time]
- * @param  {[type]} txt  [draw temp txt]
- * @param  {[type]} c  [circles]
- * @param  {[type]} cb [finish callback]
- * @return {[type]}    [description]
+ * Function that creates a level fot THE KEEPER.
+ * 
+ * @param  {int} t        The initial temperature for the level.
+ * @param  {int} mt       The max temperature for the level.
+ * @param  {Array} r      The initial and end limits of the range.
+ * @param  {int} lt       The time for completing the level.
+ * @param  {int} rt       The time the player have to KEEP inside the range.
+ * @param  {Object} txt   The texts to show on the level.
+ * @param  {Array} c      The Circles of the level.
+ * @param  {function} cb  The function to call when the level finishes.
  */
 function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c) {
-
   tmp = t;
   maxTmp = mt;
   range = r;
@@ -71,10 +70,10 @@ function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c) {
   levelT = lt;
   dgLap = dl;
 
-  eTmpText = txt;
   eWinLvl = win;
   eLostLvl = lst;
   eTimeBar = tBar;
+  eTmpText = txt;
 
   circles = [];
   createCircles(c);
@@ -111,7 +110,7 @@ function createCircles(cs) {
         0,                              // start ball movement angle
         {r: 255*(c.tmp), g:0, b: 255*(1-c.tmp)},           // path and ball color
         12,                              // path width
-        c.r*10,                           // time for lap (in ms)
+        calculateTFL(c.r),                           // time for lap (in ms)
         dgLap                               // degrees per lap
       ));
     }

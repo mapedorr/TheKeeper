@@ -1,7 +1,8 @@
 window.addEventListener('load', eventWindowLoaded, false);
 function eventWindowLoaded() {
   var canvasElement = document.getElementById("canvas13K");
-  canvasElement.width = window.innerWidth;
+  canvasElement.width = (window.innerWidth > 480) ? 480 :  window.innerWidth;
+  canvasElement.style.left = (window.innerWidth/2 - canvasElement.width/2) + "px";
   canvasElement.height = window.innerHeight;
   
   init();
@@ -10,6 +11,7 @@ function eventWindowLoaded() {
 var START_STATE = 0;
 var LEVEL1_STATE = 1;
 var INTRO_STATE = 2;
+var LVLGEN_STATE = 3;
 
 var cnv = null;
 var ctx = null;
@@ -28,7 +30,8 @@ var stateObj = null;
 var gameStates = [
   startState,
   testState,
-  introState
+  introState,
+  lvlgenState
 ];
 
 function init (){
@@ -49,7 +52,7 @@ function init (){
   initLvl();
 
   //just for now
-  switchState(START_STATE);
+  switchState(LVLGEN_STATE);
 
   setInterval(function(){
     updateLvl();
