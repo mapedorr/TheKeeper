@@ -59,7 +59,7 @@ function init (){
   }, false);
 
   initLvl();
-  switchState(START_STATE);
+  switchState(INTRO_STATE);
 
   setInterval(function(){
     updateLvl();

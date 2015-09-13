@@ -310,17 +310,6 @@ function intoRange() {
   return rangeT && tmp <= range[1] && tmp >= range[0];
 }
 
-function drawDashedLine(x, c){
-  ctx.strokeStyle = getRGBText(c);
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6]);
-  ctx.beginPath();
-  ctx.moveTo(x, cnv.height - 40);
-  ctx.lineTo(x, cnv.height);
-  ctx.stroke();
-  ctx.closePath();
-}
-
 function drawRange(){
   for (var i = range.length - 1; i >= 0; i--) {
     var triangleXPos = (Math.abs(range[i]) * (cnv.width/2))/maxTmp;

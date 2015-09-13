@@ -35,6 +35,49 @@ function introState() {
     f: "95px Sans-serif",
     c: "#F0F0F0"
   };
+  
+  var savedWText = {
+    t: "",
+    f: "25px Sans-serif",
+    c: ""
+  };
+
+  var worldsText = {
+    t: "",
+    f: "30px Sans-serif",
+    c: "#FFF"
+  };
+
+  function drawWorldsInfo() {
+    // draw separator
+    ctx.strokeStyle = "#FAFAFA";
+    ctx.lineWidth = 4;
+    ctx.setLineDash([10]);
+    ctx.beginPath();
+    ctx.moveTo(cnv.width/2, 420);
+    ctx.lineTo(cnv.width/2, cnv.height - 50);
+    ctx.stroke();
+    ctx.closePath();
+
+    // draw information of saved worlds
+    savedWText.t = 'Saved worlds';
+    savedWText.c = "#4DBF00";
+    worldsText.t = ''+savedWorlds;
+    textWidth(savedWText);
+    textWidth(worldsText);
+    fillText(savedWText, center(savedWText.w, cnv.width/2), 460);
+    fillText(worldsText, center(worldsText.w/2, cnv.width/2), 550);
+
+    // draw information of non saved worlds
+    savedWText.t = 'Non saved worlds';
+    savedWText.c = "#CC170A";
+    worldsText.t = ''+lostWorlds;
+    textWidth(savedWText);
+    textWidth(worldsText);
+    fillText(savedWText, center(savedWText.w, cnv.width/2) + cnv.width/2, 460);
+    fillText(worldsText, center(worldsText.w/2, cnv.width/2) + cnv.width/2, 550);
+
+  }
 
   return {
     create: function() {
@@ -56,6 +99,10 @@ function introState() {
         
         currentTutorial = parseInt(localStorage.getItem("keeper-tutorial")) || 1;
         nickText.t = nick; //set the nick t
+
+        //get the saved and lost worlds
+        savedWorlds = parseInt(localStorage.getItem('keeper-saved')) || 0;
+        lostWorlds = parseInt(localStorage.getItem('keeper-lost')) || 0;
       }
 
       loadingText = {
@@ -85,6 +132,8 @@ function introState() {
         return;
       }
 
+      drawWorldsInfo();
+
       tmp += tmpSpeed;
 
       // get loading message
@@ -93,6 +142,7 @@ function introState() {
         textWidth(loadingText);
       }
 
+      ctx.setLineDash([1]);
       fillText(hiText, center(hiText.w, cnv.width), 100);
       fillText(keeperText, center(keeperText.w, cnv.width), 210);
       fillText(nickText, center(nickText.w, cnv.width), 390);

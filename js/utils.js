@@ -220,3 +220,21 @@ function getRandomInt(min, max) {
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
+
+function savedWorldsInfo() {
+  if (typeof(localStorage) === 'undefined') return;
+
+  localStorage.setItem('keeper-saved', savedWorlds);
+  localStorage.setItem('keeper-lost', lostWorlds);
+}
+
+function drawDashedLine(x, c){
+  ctx.strokeStyle = getRGBText(c);
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6]);
+  ctx.beginPath();
+  ctx.moveTo(x, cnv.height - 40);
+  ctx.lineTo(x, cnv.height);
+  ctx.stroke();
+  ctx.closePath();
+}
