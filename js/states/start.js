@@ -30,11 +30,11 @@ function startState() {
 
     worldsText.t = ''+savedWorlds;
     textWidth(worldsText);
-    fillText(worldsText, 45, 40);
+    fillText(worldsText, center(worldsText.w/2, 100), 40);
 
     worldsText.t = ''+lostWorlds;
     textWidth(worldsText);
-    fillText(worldsText, cnv.width-65, 40);
+    fillText(worldsText, center(worldsText.w/2, 100) + cnv.width-110, 40);
 
   }
 
