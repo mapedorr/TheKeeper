@@ -22,7 +22,7 @@ function lvlgenState(){
       var irt = calculateTimeRange(circles, dpl, tr);// Time to keep inside range
       var lvlt = calculateTimeLvl(irt, it, tr);// Time for level
 
-      this.lifes = getRandomInt(2,284);
+      this.lifes = getRandomInt(2,54);
 
       configLvl(it, mt, tr, 
         lvlt, irt, dpl, true,

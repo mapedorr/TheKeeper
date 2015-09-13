@@ -225,7 +225,9 @@ function savedWorldsInfo() {
   if (typeof(localStorage) === 'undefined') return;
 
   localStorage.setItem('keeper-saved', savedWorlds);
+  localStorage.setItem('keeper-saved-l', savedLifes);
   localStorage.setItem('keeper-lost', lostWorlds);
+  localStorage.setItem('keeper-lost-l', lostLifes);
 }
 
 function drawDashedLine(x, c){

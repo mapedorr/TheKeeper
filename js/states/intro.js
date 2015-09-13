@@ -48,6 +48,12 @@ function introState() {
     c: "#FFF"
   };
 
+  var lifesText = {
+    t: "",
+    f: "15px Sans-serif",
+    c: "#DADADA"
+  };
+
   function drawWorldsInfo() {
     // draw separator
     ctx.strokeStyle = "#FAFAFA";
@@ -63,19 +69,25 @@ function introState() {
     savedWText.t = 'Saved worlds';
     savedWText.c = "#4DBF00";
     worldsText.t = ''+savedWorlds;
+    lifesText.t = '('+savedLifes+" species)";
     textWidth(savedWText);
     textWidth(worldsText);
+    textWidth(lifesText);
     fillText(savedWText, center(savedWText.w, cnv.width/2), 460);
     fillText(worldsText, center(worldsText.w/2, cnv.width/2), 550);
+    fillText(lifesText, center(lifesText.w, cnv.width/2), 570);
 
     // draw information of non saved worlds
     savedWText.t = 'Non saved worlds';
     savedWText.c = "#CC170A";
     worldsText.t = ''+lostWorlds;
+    lifesText.t = '('+lostLifes+" species)";
     textWidth(savedWText);
     textWidth(worldsText);
+    textWidth(lifesText);
     fillText(savedWText, center(savedWText.w, cnv.width/2) + cnv.width/2, 460);
     fillText(worldsText, center(worldsText.w/2, cnv.width/2) + cnv.width/2, 550);
+    fillText(lifesText, center(lifesText.w, cnv.width/2) + cnv.width/2, 570);
 
   }
 
@@ -102,7 +114,9 @@ function introState() {
 
         //get the saved and lost worlds
         savedWorlds = parseInt(localStorage.getItem('keeper-saved')) || 0;
+        savedLifes = parseInt(localStorage.getItem('keeper-saved-l')) || 0;
         lostWorlds = parseInt(localStorage.getItem('keeper-lost')) || 0;
+        lostLifes = parseInt(localStorage.getItem('keeper-lost-l')) || 0;
       }
 
       loadingText = {

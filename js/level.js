@@ -21,6 +21,11 @@ var lockAll = null;// Lock all circles on level?
 var lvlStatus = false;
 var isWorldLvl = false;
 
+var savedWorlds = 0;
+var savedLifes = 0;
+var lostWorlds = 0;
+var lostLifes = 0;
+
 var tempRest1Text = {
   t: "Temperature",
   f: "60px Sans-serif",
@@ -298,9 +303,11 @@ function endLvl(status) {
 
     if (status == 'WON') {
       savedWorlds += 1;
+      savedLifes += state.lifes;
     }
     else if (status == 'LOST') {
       lostWorlds += 1;
+      lostLifes += state.lifes;
     }
     savedWorldsInfo();
   }
