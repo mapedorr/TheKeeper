@@ -1,6 +1,7 @@
 function lvl1State() {
   return {
     repeat: true,
+    lifes: 1,
     create: function() {
       configLvl(70, 100, [-100, -10], 
         25, 5, 30, true, 
@@ -16,7 +17,7 @@ function lvl1State() {
     },
 
     wonClick: function() {
-      switchState(LVLGEN_STATE);
+      switchState(SKILL2_STATE);
     },
 
     lostClick: function(){

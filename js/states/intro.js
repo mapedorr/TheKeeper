@@ -1,5 +1,6 @@
 function introState() {
 
+  var firstTime = true;
   var tmpSpeed = 0.5;
 
   var messages = [
@@ -35,84 +36,6 @@ function introState() {
     c: "#F0F0F0"
   };
 
-  /* second step texts */
-  var skillsText = {
-    t: "Skills",
-    f: "80px Sans-serif",
-    c: "#FAFAFA"
-  };
-
-  var testsText = {
-    t: "Tests",
-    f: "80px Sans-serif",
-    c: "#FAFAFA"
-  };
-
-  var step1Text = {
-    t: "Step 1:",
-    f: "60px Sans-serif",
-    c: "#FAFAFA"
-  };
-
-  var msg1Text = {
-    t: "Cold the room",
-    f: "40px Sans-serif",
-    c: "#FAFAFA"
-  };
-
-  var objectiveText = {
-    t: "-100°C < t < -10°C",
-    f: "35px Sans-serif",
-    c: "#FAFAFA"
-  };
-
-  var step = 0;
-  var steps = [
-    firstStep,
-    secondStep
-  ];
-
-  function firstStep() {
-    if (tmp >= 70) {
-      nextStep()  
-    }
-
-    fillText(hiText, center(hiText.w, cnv.width), 100);
-    fillText(keeperText, center(keeperText.w, cnv.width), 210);
-    fillText(nickText, center(nickText.w, cnv.width), 390);
-    drawSquare(center(nickText.w + 90, cnv.width), 300, nickText.w + 90, 110, "#FDFDFD");
-  }
-
-  function secondStep() {
-    if (tmp <= -70) {
-      nextStep();
-    }
-
-    fillText(skillsText, center(skillsText.w, cnv.width) - 30, 100);
-    fillText(testsText, center(testsText.w, cnv.width) + 30, 180);
-
-    ctx.fillRect(0, 230, cnv.width, 5);
-
-    fillText(step1Text, center(step1Text.w, cnv.width), 350);
-    fillText(msg1Text, center(msg1Text.w, cnv.width), 450);
-    fillText(objectiveText, center(objectiveText.w, cnv.width), 510);
-    drawSquare(center(msg1Text.w + 90, cnv.width), 395, msg1Text.w + 90, 140, "#FDFDFD");
-
-  }
-
-  function nextStep() {
-    step += 1;
-
-    if (step == 1){
-      tmpSpeed = -1.5;
-      //set time in range
-    }
-
-    if (step >= steps.length) {
-      switchState(LEVEL1_STATE);
-    }
-  }
-
   return {
     create: function() {
       //check if localStorage is available
@@ -128,6 +51,7 @@ function introState() {
         }
         else {
           hiText.t = "Hi again";  //welcome back keeper
+          firstTime = false;
         }
         
         nickText.t = nick; //set the nick t
@@ -142,13 +66,7 @@ function introState() {
       textWidth([
         hiText,
         keeperText,
-        nickText,
-        skillsText,
-        testsText,
-        step1Text,
-        msg1Text,
-        objectiveText, 
-        loadingText
+        nickText
       ]);
 
       configLvl(-70, 200, [-70, 70],  //temp, maxT, range
@@ -160,24 +78,34 @@ function introState() {
 
     update: function() {
 
+      if (tmp >= 70) {
+        this.finish();
+        return;
+      }
+
       tmp += tmpSpeed;
-      steps[step]();
 
       // get loading message
-      if(step == 0){
-        if(Math.abs(tmp%50) == 0){
-          loadingText.t = messages[Math.floor(Math.random(messages.length) * messages.length)];
-          textWidth(loadingText);
-        }
-      }else{
-        loadingText.t = "prepare to start";
+      if(Math.abs(tmp%50) == 0) {
+        loadingText.t = messages[Math.floor(Math.random(messages.length) * messages.length)];
         textWidth(loadingText);
       }
 
+      fillText(hiText, center(hiText.w, cnv.width), 100);
+      fillText(keeperText, center(keeperText.w, cnv.width), 210);
+      fillText(nickText, center(nickText.w, cnv.width), 390);
+      drawSquare(center(nickText.w + 90, cnv.width), 300, nickText.w + 90, 110, "#FDFDFD");
+     
       fillText(loadingText, center(loadingText.w, cnv.width), cnv.height-5);
     },
 
     finish: function() {
+      if (firstTime) {
+        switchState(SKILL1_STATE);
+      }
+      else {
+        switchState(LVLGEN_STATE);
+      }
     }
   };
 }

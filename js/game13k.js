@@ -10,8 +10,15 @@ function eventWindowLoaded() {
 
 var START_STATE = 0;
 var INTRO_STATE = 1;
-var LEVEL1_STATE = 2;
-var LVLGEN_STATE = 3;
+var LVLGEN_STATE = 2;
+
+var SKILL1_STATE = 3;
+var SKILL2_STATE = 4;
+var SKILL3_STATE = 5;
+
+var LEVEL1_STATE = 6;
+var LEVEL2_STATE = 7;
+var LEVEL3_STATE = 8;
 
 var cnv = null;
 var ctx = null;
@@ -30,8 +37,13 @@ var stateObj = null;
 var gameStates = [
   startState,
   introState,
+  lvlgenState,
+  skillState.bind(null, 1, "Cool The Room", LEVEL1_STATE),
+  skillState.bind(null, 2, "oTTO", LEVEL2_STATE),
+  skillState.bind(null, 3, "oTTO mAS", LEVEL3_STATE),
   lvl1State,
-  lvlgenState
+  lvl1State,
+  lvl1State
 ];
 
 function init (){
