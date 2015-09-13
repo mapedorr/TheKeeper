@@ -106,6 +106,11 @@ function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c, cb) {
     textWidth([svdLifesText]);
   }
 
+  if(lvlTimer){
+    clearInterval(lvlTimer);
+    lvlTimer = null;
+  }
+
   lvlTimer = setInterval(function() {
     if (levelT){
       levelT -= 1;
@@ -278,6 +283,7 @@ function endLvl(status) {
   clearInterval(lvlTimer);
   clearInterval(inRangeTimer);
   inRangeTimer = null;
+  lvlTimer = null;
 }
 
 function intoRange() {
