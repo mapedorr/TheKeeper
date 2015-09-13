@@ -108,7 +108,7 @@ function createCircles(cs) {
         c.x,            // center x
         c.y,           // center y
         0,                              // start ball movement angle
-        {r: 255*(c.tmp), g:0, b: 255*(1-c.tmp)},           // path and ball color
+        c.tmp,           // path and ball color
         12,                              // path width
         calculateTFL(c.r),                           // time for lap (in ms)
         dgLap                               // degrees per lap

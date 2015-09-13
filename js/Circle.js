@@ -1,5 +1,5 @@
 // Object that draws a circle an its ball
-var Circle = function(ctx, radius, centerX, centerY, angle, color, pathWidth, timeForLap, degreesPerLap){
+var Circle = function(ctx, radius, centerX, centerY, angle, direction, pathWidth, timeForLap, degreesPerLap){
   // calculate the length of the circle
   var pathLength = 2*Math.PI*radius;
 
@@ -8,7 +8,7 @@ var Circle = function(ctx, radius, centerX, centerY, angle, color, pathWidth, ti
   this.ball = {
     x: 0,
     y: 0,
-    speed: 360/(pathLength/pathDivisions) * (Math.PI/180)
+    speed: (360/(pathLength/pathDivisions) * (Math.PI/180)) * (direction == 0 ? -1 : 1)
   };
 
   // calculate distance to inner edge
@@ -21,8 +21,11 @@ var Circle = function(ctx, radius, centerX, centerY, angle, color, pathWidth, ti
 
   var fadeInterval = null;
 
-  this.color = color;
-  this.temperatureSpeed = (33*degreesPerLap)/timeForLap;
+  this.color = {r:255, g:0, b:0};
+  if(direction == 0){
+    this.color = {r:0, g:0, b:255};
+  }
+  this.temperatureSpeed = ((33*degreesPerLap)/timeForLap) * (direction == 0 ? -1 : 1);
   this.listenClicks = true;
 
   // Method that draws the circle and its ball
@@ -32,7 +35,7 @@ var Circle = function(ctx, radius, centerX, centerY, angle, color, pathWidth, ti
 
     // draw path
     ctx.beginPath();
-    ctx.strokeStyle = getRGBText(color);
+    ctx.strokeStyle = getRGBText(this.color);
     ctx.lineWidth = pathWidth;
     ctx.arc(centerX, centerY, radius, 0, Math.PI*2, true);
     ctx.stroke();
@@ -43,7 +46,7 @@ var Circle = function(ctx, radius, centerX, centerY, angle, color, pathWidth, ti
     angle += this.ball.speed;
 
     // draw moving ball
-    ctx.fillStyle = getRGBText(color);
+    ctx.fillStyle = getRGBText(this.color);
     ctx.beginPath();
     ctx.arc(this.ball.x, this.ball.y, 15, 0, Math.PI*2, true);
     ctx.closePath();

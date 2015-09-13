@@ -9,8 +9,8 @@ function eventWindowLoaded() {
 }
 
 var START_STATE = 0;
-var LEVEL1_STATE = 1;
-var INTRO_STATE = 2;
+var INTRO_STATE = 1;
+var LEVEL1_STATE = 2;
 var LVLGEN_STATE = 3;
 
 var cnv = null;
@@ -29,8 +29,8 @@ var stateObj = null;
 
 var gameStates = [
   startState,
-  testState,
   introState,
+  lvl1State,
   lvlgenState
 ];
 
@@ -48,11 +48,8 @@ function init (){
     onMouseClick(e);
   }, false);
 
-
   initLvl();
-
-  //just for now
-  switchState(LVLGEN_STATE);
+  switchState(LEVEL1_STATE);
 
   setInterval(function(){
     updateLvl();
