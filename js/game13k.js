@@ -39,10 +39,10 @@ var gameStates = [
   introState,
   lvlgenState,
   skillState.bind(null, 1, "Cool The Room", LEVEL1_STATE),
-  skillState.bind(null, 2, "oTTO", LEVEL2_STATE),
+  skillState.bind(null, 2, "Now keep it!", LEVEL2_STATE),
   skillState.bind(null, 3, "oTTO mAS", LEVEL3_STATE),
   lvl1State,
-  lvl1State,
+  lvl2State,
   lvl1State
 ];
 
@@ -61,7 +61,7 @@ function init (){
   }, false);
 
   initLvl();
-  switchState(START_STATE);
+  switchState(SKILL2_STATE);
 
   setInterval(function(){
     updateLvl();
