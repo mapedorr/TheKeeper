@@ -14,18 +14,28 @@ var dgLap = 0;
 var rmRangeT = 0; //current time into the range
 
 var lvlTimer = null;
+var inRangeTimer = null;
+var ftir = null;// First time inside range
+var lockAll = null;// Lock all circles on level?
 
 var lvlStatus = false;
 
-var tempRestText = {
-  t: "Temperature restored",
+var tempRest1Text = {
+  t: "Temperature",
+  f: "60px Sans-serif",
+  c: "#FDFDFD"
+};
+
+var tempRest2Text = {
+  t: "restored",
   f: "60px Sans-serif",
   c: "#FDFDFD"
 };
 
 var svdLifesText = {
-  t: "saved species",
-  f: "40px Sans-serif",
+  t: "",
+  dt: "saved species",
+  f: "35px Sans-serif",
   c: "#F0F0F0"
 };
 
@@ -41,12 +51,19 @@ var tryAgainText = {
   c: "#FFF"
 };
 
+var nextLvlText = {
+  t: "Touch to try another one",
+  f: "35px Sans-serif",
+  c: "#FFF"
+};
+
 function initLvl() {
   textWidth([
-    tempRestText,
-    svdLifesText,
+    tempRest1Text,
+    tempRest2Text,
     timeOverText,
-    tryAgainText
+    tryAgainText,
+    nextLvlText
   ]);
 }
 
@@ -58,11 +75,15 @@ function initLvl() {
  * @param  {Array} r      The initial and end limits of the range.
  * @param  {int} lt       The time for completing the level.
  * @param  {int} rt       The time the player have to KEEP inside the range.
- * @param  {Object} txt   The texts to show on the level.
+ * @param  {???} dl       ???
+ * @param  {???} win      ???
+ * @param  {???} lst      ???
+ * @param  {???} tBar     ???
+ * @param  {???} txt      ???
  * @param  {Array} c      The Circles of the level.
  * @param  {function} cb  The function to call when the level finishes.
  */
-function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c) {
+function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c, cb) {
   tmp = t;
   maxTmp = mt;
   range = r;
@@ -80,18 +101,19 @@ function configLvl(t, mt, r, lt, rt, dl, win, lst, tBar, txt, c) {
 
   lvlStatus = 'PLAYING';
 
-  lvlTimer = setInterval(function() {
+  if(state.lifes){
+    svdLifesText.t = state.lifes + " " + svdLifesText.dt;
+    textWidth([svdLifesText]);
+  }
 
-    if(intoRange()){
-      // initiate the timer of objective reached
-      rmRangeT -= 1;
-    }
-    
+  lvlTimer = setInterval(function() {
     if (levelT){
       levelT -= 1;
     }
-
   }, 1000);
+
+  ftir = false;
+  lockAll = false;
 }
 
 //@TODO improve: if c[x] is object use that params 
@@ -118,17 +140,13 @@ function createCircles(cs) {
 }
 
 function updateLvl() {
-
   if (lvlStatus == 'LOST') {
-
-    if (getClick()) {
-      state.create();
+    if(getClick() && state.lostClick) {
+      state.lostClick();
     }
-  }
-  else if (lvlStatus == 'WON') {
-
-    if (getClick()) {
-      alert('aqui no hay nada mas que ver');
+  }else if (lvlStatus == 'WON') {
+    if(getClick() && state.wonClick){
+      state.wonClick();
     }
   }
   else {
@@ -147,7 +165,16 @@ function updateLvl() {
     var click = getClick();
     if (click){
       for(var i=0; i<circles.length; i++){
-        circles[i].checkClick(click.x, click.y);
+        var clicked = circles[i].checkClick(click.x, click.y);
+        if(clicked && ftir){
+          lockAll = true;
+          break;
+        }
+      }
+      if(lockAll){
+        for(var i=0; i<circles.length; i++){
+          circles[i].listenClicks = false;
+        }
       }
     }
 
@@ -155,6 +182,33 @@ function updateLvl() {
 
     if(Math.abs(tmp) > maxTmp){
       tmp = (tmp < 0) ? maxTmp*-1 : maxTmp;
+    }
+
+    if(intoRange()){
+      // initiate the timer of objective reached
+      inRangeTimer = inRangeTimer || setInterval(function(){
+        rmRangeT -= 1;
+      }, 1000);
+
+      // unlock all the circles on first entrance
+      if(!ftir){
+        ftir = true;
+        for(var i=0; i<circles.length; i++){
+          circles[i].listenClicks = true;
+        }
+      }
+    }else{
+      // restart the timer for objective reached
+      clearInterval(inRangeTimer);
+      inRangeTimer = null;
+      rmRangeT = rangeT;
+      ftir = false;
+      if(lockAll){
+        for(var i=0; i<circles.length; i++){
+          circles[i].listenClicks = true;
+        }
+        lockAll = false;
+      }
     }
   }
 
@@ -199,17 +253,22 @@ function winLvl() {
   if (eWinLvl) {
     stopCircles();
 
-    fillText(tempRestText, center(tempRestText.w, cnv.width), cnv.height/2);
-    fillText(svdLifesText, center(svdLifesText.w, cnv.width), cnv.height/2 + 70);
+    fillText(tempRest1Text, center(tempRest1Text.w, cnv.width), cnv.height/2);
+    fillText(tempRest2Text, center(tempRest2Text.w, cnv.width), cnv.height/2 + 60);
+    if(state.lifes){
+      fillText(svdLifesText, center(svdLifesText.w, cnv.width), cnv.height/2 + 110);
+    }
   }
 }
 
 function lostLvl() {
-
   if (eLostLvl) {
-
     fillText(timeOverText, center(timeOverText.w, cnv.width), cnv.height/2);
-    fillText(tryAgainText, center(tryAgainText.w, cnv.width), cnv.height/2 + 50);
+    if(state.repeat){
+      fillText(tryAgainText, center(tryAgainText.w, cnv.width), cnv.height/2 + 50);
+    }else if(!state.repeat){
+      fillText(nextLvlText, center(nextLvlText.w, cnv.width), cnv.height/2 + 50);
+    }
   }
 }
 
@@ -217,10 +276,12 @@ function endLvl(status) {
   lvlStatus = status;
   stopCircles();
   clearInterval(lvlTimer);
+  clearInterval(inRangeTimer);
+  inRangeTimer = null;
 }
 
 function intoRange() {
-  return rangeT && tmp <= range[1] && tmp >= range[0]
+  return rangeT && tmp <= range[1] && tmp >= range[0];
 }
 
 function drawDashedLine(x, c){

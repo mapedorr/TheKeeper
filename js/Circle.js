@@ -92,8 +92,10 @@ var Circle = function(ctx, radius, centerX, centerY, angle, direction, pathWidth
         this.ball.speed *= -1;
         this.temperatureSpeed *= -1;
         this.listenClicks = false;
+        return true;
       }
     }
+    return false;
   };
 
   // Method that draws things for debugging
