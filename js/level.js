@@ -32,6 +32,12 @@ var tempRest2Text = {
   c: "#FDFDFD"
 };
 
+var touchConTxt = {
+  t: "touch to continue",
+  f: "30px Sans-serif",
+  c: "#D6990B"
+}
+
 var svdLifesText = {
   t: "",
   dt: "saved species",
@@ -58,12 +64,14 @@ var nextLvlText = {
 };
 
 function initLvl() {
+  /* set the text width for all the text */
   textWidth([
     tempRest1Text,
     tempRest2Text,
     timeOverText,
     tryAgainText,
-    nextLvlText
+    nextLvlText,
+    touchConTxt
   ]);
 }
 
@@ -260,6 +268,7 @@ function winLvl() {
 
     fillText(tempRest1Text, center(tempRest1Text.w, cnv.width), cnv.height/2);
     fillText(tempRest2Text, center(tempRest2Text.w, cnv.width), cnv.height/2 + 60);
+    fillText(touchConTxt, center(touchConTxt.w, cnv.width), cnv.height/2 + 100);
     if(state.lifes){
       fillText(svdLifesText, center(svdLifesText.w, cnv.width), cnv.height/2 + 110);
     }
