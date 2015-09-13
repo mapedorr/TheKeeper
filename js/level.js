@@ -59,7 +59,7 @@ var tryAgainText = {
 };
 
 var nextLvlText = {
-  t: "Touch to try another one",
+  t: "Touch to try another world",
   f: "35px Sans-serif",
   c: "#FFF"
 };
